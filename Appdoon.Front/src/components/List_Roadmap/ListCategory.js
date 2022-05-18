@@ -3,45 +3,13 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-
+import useFetch from '../Common/useFetch';
 
 
 const ListCategory = () => {
-
-
-    const[categories, setCategories] = useState([]);
-    const url = process.env.REACT_APP_API + "category";
-    const [error, setError] = useState(null);
-
-
-    useEffect(() =>{
-        
-        fetch(url,{
-            
-            method : "Get",
-            headers : {"Content-Type" : "application/json"}
-            
-        }).then(res => {
-            
-            if(!res.ok){
-                throw Error('could not fetch!');
-            }
-            return res.json();
-        })
-        .then(data => {
-            setCategories(data.Data);
-            setError(null);
-        })
-        .catch(err => {
-            alert(err);
-            if(err.name === 'AbortError'){
-                console.log('fetch aborted');
-            }
-            else{
-                setError(err.message);
-            }
-        })
-    },[url]);
+    const [url, setUrl] = useState(process.env.REACT_APP_API + "category");
+    const [sensetive, setSensetive] = useState(false);
+    const {data : categories, error} = useFetch(url,sensetive);
 
     return(
         <div>

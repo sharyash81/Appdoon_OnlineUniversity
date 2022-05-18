@@ -24,6 +24,7 @@ import EditCategory from './Components/Edit_Roadmap/EditCategory';
 import EditStep from './Components/Edit_Roadmap/EditStep';
 import EditChildStep from './Components/Edit_Roadmap/EditChildStep';
 import EditLesson from './Components/Edit_Roadmap/EditLesson';
+import EditLink from './Components/Edit_Roadmap/EditLink';
 
 
 import Profile from './Components/User/Profile';
@@ -33,8 +34,13 @@ import EditProfile from './Components/User/EditProfile';
 import Lesson from './Components/Roadmap/Lesson';
 
 import Lessons from './Components/Roadmap/Lessons';
-import ListCategory from './Components/List_Roadmap/ListCategory';
 
+import ListCategory from './Components/List_Roadmap/ListCategory';
+import ListRoadmap from './Components/List_Roadmap/ListRoadmap';
+import ListChildStep from './Components/List_Roadmap/ListChildStep';
+import ListStep from './Components/List_Roadmap/ListStep';
+import ListLesson from './Components/List_Roadmap/ListLesson';
+import ListLink from './Components/List_Roadmap/ListLink';
 
 function App() {
 
@@ -72,12 +78,20 @@ function App() {
           <Route path={`/create_child_step`} element={<CreateChildStep/>}/>
           <Route path={`/create_lesson`} element={<CreateLesson/>}/>
 
-          <Route path={`/edit_roadmap`} element={<EditRoadmap/>}/>
-          <Route path={`/edit_step`} element={<EditStep/>}/>
-          <Route path={`/edit_category`} element={<ListCategory/>}/>
+          <Route path={`/edit_roadmap/:id`} element={<EditRoadmap/>}/>
+          <Route path={`/edit_step/:id`} element={<EditStep/>}/>
           <Route path={`/edit_category/:id`} element={<EditCategory/>}/>
-          <Route path={`/edit_child_step`} element={<EditChildStep/>}/>
-          <Route path={`/edit_lesson`} element={<EditLesson/>}/>
+          <Route path={`/edit_child_step/:id`} element={<EditChildStep/>}/>
+          <Route path={`/edit_lesson/:id`} element={<EditLesson/>}/>
+          <Route path={`/edit_link/:id`} element={<EditLink/>}/>
+
+          <Route path={`/edit_roadmap`} element={<ListRoadmap/>}/>
+          <Route path={`/edit_step`} element={<ListStep/>}/>
+          <Route path={`/edit_category`} element={<ListCategory/>}/>
+          <Route path={`/edit_child_step`} element={<ListChildStep/>}/>
+          <Route path={`/edit_lesson`} element={<ListLesson/>}/>
+          <Route path={`/edit_link`} element={<ListLink/>}/>
+
           
           
           <Route path={`/Profile`} element={<Profile/>}/>

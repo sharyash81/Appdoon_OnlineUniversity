@@ -1,8 +1,11 @@
 ﻿using Appdoon.Application.Interfaces;
+using Appdoon.Application.Services.Lessons.Command.CreateLessonService;
 using Appdoon.Application.Validatores.LessonValidatore;
 using Appdoon.Common.Dtos;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,7 +20,7 @@ namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 	}
 	public interface IUpdateLessonService
 	{
-		ResultDto Execute(int id, UpdateLessonDto lesson);
+		ResultDto Execute(int id, HttpRequest httpRequest, string currentpath);
 	}
 
 	public class UpdateLessonService : IUpdateLessonService
@@ -28,15 +31,59 @@ namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 		{
 			_context = context;
 		}
-		public ResultDto Execute(int id, UpdateLessonDto lesson)
+		public ResultDto Execute(int id, HttpRequest httpRequest, string currentpath)
 		{
 			try
 			{
+				List<string> data = new List<string>();
 
-				// check validation rules
-				UpdateLessonValidatore validationRules = new UpdateLessonValidatore();
-				var result = validationRules.Validate(lesson);
-				if (result.IsValid == false)
+				foreach (var key in httpRequest.Form.Keys)
+				{
+					var val = httpRequest.Form[key];
+					data.Add(val);
+				}
+
+				var Title = data[0];
+				var Text = data[1];
+				var PhotoFileName = data[2];
+
+				var imageSrc = "";
+				var TimeNow = DateTime.Now;
+				if (httpRequest.Form.Files.Count() != 0)
+				{
+					var postedFile = httpRequest.Form.Files[0];
+					string filename = postedFile.FileName;
+					var physicalPath = currentpath + "/Photos/Lesson/" + $"({Title}+{TimeNow})" + filename;
+					using (var stream = new FileStream(physicalPath, FileMode.Create))
+					{
+						postedFile.CopyTo(stream);
+					}
+					imageSrc = $"({Title}+{TimeNow})" + PhotoFileName.ToString();
+				}
+				else
+				{
+					PhotoFileName = "1.jpg";
+					imageSrc = PhotoFileName;
+				}
+
+				///////////////////////
+
+				var lessonDto = new UpdateLessonDto()
+				{
+					Text = Text,
+					Title = Title,
+					TopBannerSrc = imageSrc,
+				};
+
+				LessonValidatore validationRules = new LessonValidatore();
+				var result = validationRules.Validate(new CreateLessonDto()
+				{
+					Text = lessonDto.Text,
+					Title = lessonDto.Title,
+					TopBannerSrc = lessonDto.TopBannerSrc,
+				});
+
+				if(result.IsValid == false)
 				{
 					return new ResultDto()
 					{
@@ -45,22 +92,13 @@ namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 					};
 				}
 
+				var lesoon = _context.Lessons.Where(l => l.Id == id).FirstOrDefault();
 
+				lesoon.UpdateTime = TimeNow;
+				lesoon.TopBannerSrc = imageSrc;
+				lesoon.Title = Title;
+				lesoon.Text = Text;
 
-				var les = _context.Lessons.Where(s => s.Id == id).FirstOrDefault();
-				if (les == null)
-				{
-					return new ResultDto()
-					{
-						IsSuccess = false,
-						Message = "این آیدی وجود ندارد!",
-					};
-				}
-
-				les.Text = lesson.Text;
-				les.TopBannerSrc = lesson.TopBannerSrc;
-				les.Title = lesson.Title;
-				les.UpdateTime = DateTime.Now;
 				_context.SaveChanges();
 
 				return new ResultDto()
@@ -74,7 +112,7 @@ namespace Appdoon.Application.Services.Lessons.Command.UpdateLessonService
 				return new ResultDto()
 				{
 					IsSuccess = false,
-					Message = "خطا در بروزرسانی دسته!",
+					Message = "خطا در بروزرسانی مقاله!",
 				};
 			}
 		}
