@@ -327,6 +327,10 @@ header.header-main {
     cursor: pointer;
 }
 
+.account-box .reactselect{
+    line-height: 20px;
+}
+
 .account-box span.icon-account {
     width: 43px;
     height: 43px;
@@ -4521,7 +4525,7 @@ span.shipping-destination {
 
 .page-account-box {
     width: 100%;
-    margin-top: 70px;
+    margin-top: 0px;
 }
 
 .page-account-box .ds-userlogin a.account-box-logo {
@@ -4633,7 +4637,6 @@ span.shipping-destination {
     width: 100%;
     height: 30px;
     outline: none;
-    text-align: right;
     position: relative;
     padding: 0 15px;
     margin: 100 100 ;
@@ -4648,7 +4651,6 @@ textarea.number-email-input{
     width: 100%;
     height: 100px;
     outline: none;
-    text-align: right;
     position: relative;
     padding: 0 15px;
     margin: 100 100 ;
@@ -4665,15 +4667,13 @@ textarea.number-email-input{
     border: 1px solid #eee;
 }
 
-/*.account-box-content .form-account-title input.number-email-input::placeholder {
-    text-align: right;
+.account-box-content .form-account-title input.number-email-input::placeholder {
     color: #9f9f9f;
 }
 
 .account-box-content .form-account-title input.password-input::placeholder {
-    text-align: right;
     color: #9f9f9f;
-}*/
+}
 
 .account-box-content .form-account-title label {
     font-size: 12px;
@@ -4918,7 +4918,7 @@ textarea.number-email-input{
     margin-bottom: 20px;
     border-radius: 20px;
     overflow: hidden;
-    background: #281e75;
+    background: #fbfbfb;
 }
 
 .post-item-profile .sidebar-profile .profile-box .profile-box-header-inline {
@@ -4932,7 +4932,7 @@ textarea.number-email-input{
     height: 70px;
     margin: 20px auto;
     overflow: hidden;
-    padding: 10px;
+    padding: 0px;
     border: 1px solid #281e75;
     border-radius: 50px;
     text-align: center;
@@ -5012,7 +5012,7 @@ textarea.number-email-input{
     font-size: 13px;
     border-radius: 20px;
     padding: 8px 15px;
-    color: rgb(249, 245, 245);
+    color: #666;
     font-weight: 500;
 }
 
@@ -5022,13 +5022,13 @@ textarea.number-email-input{
 }
 
 .post-item-profile .sidebar-profile .profile-box ul.profile-account-navs li.profile-account-nav-item a:hover {
-    background: rgb(29, 15, 81);
+    background: #eee;
     transition: 0.2s;
 }
 
 .post-item-profile .sidebar-profile .profile-box ul.profile-account-navs li.profile-account-nav-item a.active {
     background-color: #dffcff !important;
-    color: #603bb6 !important;
+    color: #651fff !important;
 }
 
 .post-item-profile .profile-content {
@@ -5050,14 +5050,13 @@ textarea.number-email-input{
 }
 
 .post-item-profile .profile-content .profile-stats table tr .title {
-    font-size: 17px;
+    font-size: 12px;
     color: #999999;
 }
 
 .post-item-profile .profile-content .profile-stats table tr .value {
-    font-size: 20px;
-    font-weight: bold;
-    color: #281e75;
+    font-size: 14px;
+    color: #666666;
 }
 
 .post-item-profile .profile-content .profile-stats .profile-edit-action {
@@ -8817,7 +8816,6 @@ span.show-less {
     box-shadow: 0 12px 12px 0 hsl(0deg 0% 71% / 11%);
     padding-bottom: 20px;
     margin-bottom: 20px;
-    margin-top: 20px;
 }
 
 #content-bottom {

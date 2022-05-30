@@ -3,6 +3,7 @@ using Appdoon.Application.Services.Lessons.Command.DeleteLessonService;
 using Appdoon.Application.Services.Lessons.Command.UpdateLessonService;
 using Appdoon.Application.Services.Lessons.Query.GetAllLessonsService;
 using Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService;
+using Appdoon.Application.Services.Lessons.Query.SearchLessonsService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Appdoon.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class LessonController : ControllerBase
     {
@@ -28,6 +29,8 @@ namespace Appdoon.WebApi.Controllers
         private readonly IDeleteLessonService _deleteLessonService;
         //Update
         private readonly IUpdateLessonService _updateLessonService;
+        //search 
+        private readonly ISearchLessonsService _searchLessonsService;
 
         private readonly IWebHostEnvironment _env;
 
@@ -36,6 +39,7 @@ namespace Appdoon.WebApi.Controllers
                                 ICreateLessonService createLessonService,
                                 IDeleteLessonService deleteLessonService,
                                 IUpdateLessonService updateLessonService,
+                                ISearchLessonsService searchLessonsService,
                                 IWebHostEnvironment env)
         {
             _getAllLessonsService = getAllLessonsService;
@@ -43,14 +47,15 @@ namespace Appdoon.WebApi.Controllers
             _createLessonService = createLessonService;
             _deleteLessonService = deleteLessonService;
             _updateLessonService = updateLessonService;
+            _searchLessonsService = searchLessonsService;
             _env = env;
         }
 
         // GET: api/<LessonController>
         [HttpGet]
-        public JsonResult Get()
+        public JsonResult Get(int page_number, int page_size)
         {
-            var result = _getAllLessonsService.Execute();
+            var result = _getAllLessonsService.Execute(page_number, page_size);
             return new JsonResult(result);
         }
 
@@ -83,6 +88,14 @@ namespace Appdoon.WebApi.Controllers
         public JsonResult Delete(int id)
         {
             var result = _deleteLessonService.Execute(id);
+            return new JsonResult(result);
+        }
+
+        // GET api/<LessonController>
+        [HttpGet]
+        public JsonResult Search(string searched_text, int page_number, int page_size)
+        {
+            var result = _searchLessonsService.Execute(searched_text, page_number, page_size);
             return new JsonResult(result);
         }
     }

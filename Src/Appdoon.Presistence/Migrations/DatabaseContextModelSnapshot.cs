@@ -19,6 +19,80 @@ namespace Appdoon.Presistence.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Appdoon.Domain.Entities.Progress.ChildStepProgress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ChildStepId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RemoveTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChildStepId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChildStepProgresses");
+                });
+
+            modelBuilder.Entity("Appdoon.Domain.Entities.Progress.StepProgress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("InsertTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RemoveTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("StepId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StepId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("StepProgresses");
+                });
+
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -62,9 +136,6 @@ namespace Appdoon.Presistence.Migrations
 
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
@@ -215,9 +286,6 @@ namespace Appdoon.Presistence.Migrations
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsDone")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsRemoved")
                         .HasColumnType("bit");
 
@@ -275,21 +343,21 @@ namespace Appdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2022, 5, 9, 14, 25, 42, 174, DateTimeKind.Local).AddTicks(678),
+                            InsertTime = new DateTime(2022, 5, 27, 23, 54, 27, 139, DateTimeKind.Local).AddTicks(405),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2022, 5, 9, 14, 25, 42, 182, DateTimeKind.Local).AddTicks(3059),
+                            InsertTime = new DateTime(2022, 5, 27, 23, 54, 27, 145, DateTimeKind.Local).AddTicks(8183),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2022, 5, 9, 14, 25, 42, 182, DateTimeKind.Local).AddTicks(3424),
+                            InsertTime = new DateTime(2022, 5, 27, 23, 54, 27, 145, DateTimeKind.Local).AddTicks(8498),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -415,6 +483,44 @@ namespace Appdoon.Presistence.Migrations
                     b.ToTable("RoleUser");
                 });
 
+            modelBuilder.Entity("Appdoon.Domain.Entities.Progress.ChildStepProgress", b =>
+                {
+                    b.HasOne("Appdoon.Domain.Entities.RoadMaps.ChildStep", "ChildStep")
+                        .WithMany("ChildStepProgresses")
+                        .HasForeignKey("ChildStepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Appdoon.Domain.Entities.Users.User", "User")
+                        .WithMany("ChildStepProgresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChildStep");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Appdoon.Domain.Entities.Progress.StepProgress", b =>
+                {
+                    b.HasOne("Appdoon.Domain.Entities.RoadMaps.Step", "Step")
+                        .WithMany("StepProgresses")
+                        .HasForeignKey("StepId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Appdoon.Domain.Entities.Users.User", "User")
+                        .WithMany("StepProgresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Step");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.ChildStep", b =>
                 {
                     b.HasOne("Appdoon.Domain.Entities.RoadMaps.Step", "Step")
@@ -522,6 +628,11 @@ namespace Appdoon.Presistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.ChildStep", b =>
+                {
+                    b.Navigation("ChildStepProgresses");
+                });
+
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.RoadMap", b =>
                 {
                     b.Navigation("Steps");
@@ -530,11 +641,17 @@ namespace Appdoon.Presistence.Migrations
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.Step", b =>
                 {
                     b.Navigation("ChildSteps");
+
+                    b.Navigation("StepProgresses");
                 });
 
             modelBuilder.Entity("Appdoon.Domain.Entities.Users.User", b =>
                 {
+                    b.Navigation("ChildStepProgresses");
+
                     b.Navigation("CreatedRoadMaps");
+
+                    b.Navigation("StepProgresses");
                 });
 #pragma warning restore 612, 618
         }

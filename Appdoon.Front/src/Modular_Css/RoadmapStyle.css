@@ -5,8 +5,7 @@
 }
 
 .timelineBody {
-	background-image: linear-gradient(135deg, #0d2b58 0%, #580a35 100%);
-
+    background-image: linear-gradient(0deg, rgb(215, 215, 215) 0%, rgb(245,245,245) 100%);
     direction: ltr;
     
     width: 100%;
@@ -21,12 +20,11 @@
 
 	min-height: 100vh;
 	font-family: 'Lato', sans-serif;
-    
 }
 
 .timelineBody h1
 {
-    color: #fff;
+    color: #000;
 }
 
 h1 {
@@ -51,8 +49,9 @@ h1 {
 
 
 
-.timeline-container::after {
-    background-color: #f1eff782;
+.timeline-container::before {
+    background-color: rgb(101, 31, 255, 0.6);
+    box-shadow: 0 0 12px #651fff;
     content: '';
     position: absolute;
     /* */
@@ -70,6 +69,7 @@ h1 {
     position: relative;
     margin: 10px 0;
     width: 50%;
+    
 }
 
 .timeline-item:nth-child(odd) {
@@ -78,19 +78,16 @@ h1 {
     /* */
     padding-left: 30px;
 }
-
-
-
 .timeline-item-content {
-    box-shadow: 0 0 8px rgba(1000, 1000, 1000, 100);
+    box-shadow: 0 0 16px #651fff;
     border-radius: 10px;
-    background-color:  #966078;
+    /*background-color: linear-gradient(135deg, #005ae2 20%, #265197 100%);*/
     display: flex;	
     perspective: 100vw;
     transform-style: preserve-3d;
     transition: all 1s ease 0s;
     /*transition: all 0.5s linear 0s;*/
-	/*background-image: linear-gradient(to bottom, #836fa9 0%, rgb(0, 0, 0) 100%);*/
+	background-image: linear-gradient(-45deg , #651fff 0%, #9b31ff 100%);
 
     flex-direction: column;
     align-items: flex-end;
@@ -115,6 +112,8 @@ h1 {
     height: 15px;
 }
 
+
+
 .timeline-item:nth-child(even) .timeline-item-content {
     /* */
     text-align: right;
@@ -130,7 +129,7 @@ h1 {
 
 
 .timeline-item-content .tag {
-    color: rgba(245, 239, 239, 0.821);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 20px;
     font-weight: 900;
     top: 10px;
@@ -140,7 +139,7 @@ h1 {
     padding: 7px;
     position: absolute;
     text-transform: uppercase;
-    text-shadow: 0 2px rgb(75, 73, 73), 0 2px rgb(128, 126, 126);
+    /*text-shadow: 0 2px rgb(75, 73, 73), 0 2px rgb(128, 126, 126);*/
 
 }
 
@@ -173,7 +172,7 @@ h1 {
 .butten_Edit:hover {
     background: rgb(171, 171, 184);
   }
-.timeline-container :hover
+.zoom :hover
 {
     transform: scale(1.02);
 }
@@ -182,30 +181,43 @@ h1 {
     line-height: 24px;
     margin: 45px 0 0;
     max-width: 450px;
-    color: rgba(23, 18, 13, 0.942);
+    color: rgba(255, 255, 255, 0.7);
     padding: 0px 5px;
     font-weight: bold;
 
 }
 
 .timeline-item-content a {
-	color: rgb(78, 18, 18);
+	color: rgb(255, 255, 255);
 	text-decoration: none;
     font-size: 14px;
     font-weight: bold;
     align-self: flex-start;
 }
 
-.timeline-item-content a::after {
+.timeline-item-content .bilbilak {
+    display:flex;
+    left: 5px;
+    align-self: flex-start;
+}   
+
+.timeline-item-content .bilbilak a::after {
     content: ' ►';
     font-size: 12px;
+}
+
+.timeline-item-content .edit_delete {
+    margin-bottom: -30px;
+    display:flex;
+    left: 5px;
+    align-self:center;
 }
 
 
 
 .timeline-item-content .circle {
-    background-color: rgb(255, 255, 255);
-    border: 3px solid #956a68;
+    background-color: #fff;
+    border: 4px solid rgb(101, 31, 255, 0.5);
     border-radius: 50%;
     position: absolute;
     top: calc(50% - 10px);

@@ -3,18 +3,21 @@ using Appdoon.Application.Services.Roadmaps.Command.DeleteRoadmapService;
 using Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService;
 using Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService;
 using Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapService;
+using Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService;
+using Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Appdoon.Domain.Entities.RoadMaps;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Appdoon.WebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class RoadmapController : ControllerBase
     {
@@ -29,7 +32,10 @@ namespace Appdoon.WebApi.Controllers
         private readonly IDeleteRoadmapService _deleteRoadmapService;
         //Update
         private readonly IUpdateRoadmapService _updateRoadmapService;
-        
+        //Search
+        private readonly ISearchRoadmapsService _searchRoadmapsService;
+        //filter
+        private readonly IFilterRoadmapsService _filterRoadmapsService;
         private readonly IWebHostEnvironment _env;
 
 
@@ -38,6 +44,8 @@ namespace Appdoon.WebApi.Controllers
                                   ICreateRoadmapService createRoadmapService,
                                   IDeleteRoadmapService deleteRoadmapService,
                                   IUpdateRoadmapService updateRoadmapService,
+                                  ISearchRoadmapsService searchRoadmapsService,
+                                  IFilterRoadmapsService filterRoadmapsService,
                                   IWebHostEnvironment env)
         {
             _getAllRoadmapsService = getAllRoadmapsService;
@@ -45,14 +53,16 @@ namespace Appdoon.WebApi.Controllers
             _createRoadmapService = createRoadmapService;
             _deleteRoadmapService = deleteRoadmapService;
             _updateRoadmapService = updateRoadmapService;
+            _searchRoadmapsService = searchRoadmapsService;
+            _filterRoadmapsService = filterRoadmapsService;
             _env = env;
         }
 
         // GET: api/<RoadmapController>
-        [HttpGet]
-        public JsonResult Get()
+        [HttpGet] 
+        public JsonResult Get(int page_number, int page_size)
         {
-            var result = _getAllRoadmapsService.Execute();
+            var result = _getAllRoadmapsService.Execute(page_number,page_size);
             return new JsonResult(result);
         }
 
@@ -74,7 +84,7 @@ namespace Appdoon.WebApi.Controllers
 
         // PUT api/<RoadmapController>/5
         [HttpPut("{id}")]
-        public JsonResult Put(int id, [FromBody] string value)
+        public JsonResult Put(int id)
         {
             var result = _updateRoadmapService.Execute(id, Request, _env.ContentRootPath);
             return new JsonResult(result);
@@ -85,6 +95,22 @@ namespace Appdoon.WebApi.Controllers
         public JsonResult Delete(int id)
         {
             var result = _deleteRoadmapService.Execute(id);
+            return new JsonResult(result);
+        }
+
+        // GET api/<RoadmapController>
+        [HttpGet]
+        public JsonResult Search(string searched_text, int page_number, int page_size)
+        {
+            var result = _searchRoadmapsService.Execute(searched_text,page_number,page_size);
+            return new JsonResult(result);
+        }
+
+        // GET api/<RoadmapController>
+        [HttpPost]
+        public JsonResult Filter(FilterDto fliterDto)
+        {
+            var result = _filterRoadmapsService.Execute(fliterDto);
             return new JsonResult(result);
         }
     }

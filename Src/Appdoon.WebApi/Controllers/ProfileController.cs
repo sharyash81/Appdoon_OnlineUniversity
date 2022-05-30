@@ -2,10 +2,14 @@
 using Appdoon.Application.Services.Users.Query.GetBookMarkRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetUserService;
+using Appdoon.Common.UserRoles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Appdoon.WebApi.Controllers
 {
+	[Authorize(policy : "User")]
+	[Authorize(policy: "Profile")]
 	[Route("api/[controller]/[action]")]
 	[ApiController]
 	public class ProfileController : Controller
@@ -29,7 +33,6 @@ namespace Appdoon.WebApi.Controllers
 		public JsonResult Info(int Id)
 		{
 			var result = _getUserService.Execute(Id);
-
 			return new JsonResult(result);
 		}
 

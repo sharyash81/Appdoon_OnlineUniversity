@@ -25,7 +25,7 @@ const EditProfile = () => {
                                 <section class="profile-box">
                                     <ul class="profile-account-navs">
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <a href="/Profile" class="active"><i class="mdi mdi-account-outline"></i>
+                                            <a href="/Profile" class=""><i class="mdi mdi-account-outline"></i>
                                                 پروفایل
                                             </a>
                                         </li>
@@ -40,6 +40,11 @@ const EditProfile = () => {
                                                 رودمپ های مورد علاقه من
                                             </a>
                                         </li>
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <a href="/UserFavoriteRoadmaps" class="active"><i class=""></i>
+                                                ویرایش اطلاعات
+                                            </a>
+                                        </li>
                                     </ul>
                                 </section>
                             </div>
@@ -52,24 +57,24 @@ const EditProfile = () => {
                                             <form action="#" class="form-checkout">
                                                 <div class="form-checkout-row">
                                                     <label for="namefirst">نام </label>
-                                                    <input type="text" id="namefirst"
+                                                    <input dir='auto' type="text" id="namefirst"
                                                         class="input-namefirst-checkout form-control"/>
                                                     <label for="namelast">نام خانوادگی </label>
-                                                    <input type="text" id="namelast"
+                                                    <input dir='auto' type="text" id="namelast"
                                                         class="input-namelast-checkout form-control"/>
                                                     <label for="email">ایمیل </label>
-                                                    <input type="text" id="email"
+                                                    <input dir='auto' type="text" id="email"
                                                         class="input-email-checkout form-control"/>
                                                     <label for="password">شماره تلفن</label>
-                                                    <input type = "text" id='phone'/>
+                                                    <input dir='auto' type = "text" id='phone'/>
                                                     <label for="password">رمز عبور قبلی </label>
-                                                    <input type="text" id="password"
+                                                    <input dir='auto' type="text" id="password"
                                                         class="input-password-checkout form-control"/>
                                                     <label for="password">رمز عبور جدید </label>
-                                                    <input type="text" id="password"
+                                                    <input dir='auto' type="text" id="password"
                                                         class="input-password-checkout form-control"/>
                                                     <label for="password">تکرار رمز عبور جدید</label>
-                                                    <input type="text" id="password"
+                                                    <input dir='auto' type="text" id="password"
                                                         class="input-password-checkout form-control"/>
                                                     <div class="AR-CR">
                                                         <button class="btn-registrar"> ثبت تغییرات </button>

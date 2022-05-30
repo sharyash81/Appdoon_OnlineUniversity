@@ -1,13 +1,26 @@
 import {NavLink} from 'react-router-dom';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useFetch from '../Common/useFetch';
 import { Col, Form } from "react-bootstrap";
+import { useCookies } from "react-cookie";
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Profile = () => {
+    const [cookies, setCookie] = useCookies(['Appdoon_Auth']);
+    const navigate = useNavigate();
 
+    useEffect(()=>{
+        console.log(cookies)
+        if(!cookies.Appdoon_Auth){
+            navigate('/NotFound')
+        }
+    },[cookies])
 
     
     return(
+        cookies.Appdoon_Auth &&
         <div class="container-main">
         <div class="d-block">
             <section class="profile-home">
@@ -49,6 +62,11 @@ const Profile = () => {
                                                 رودمپ های مورد علاقه من
                                             </a>
                                         </li>
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <a href="EditProfile" class=""><i class=""></i>
+                                                ویرایش اطلاعات      
+                                            </a>
+                                        </li>
                                     </ul>
                                 </section>
                             </div>
@@ -87,9 +105,7 @@ const Profile = () => {
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="profile-edit-action">
-                                        <a href="/EditProfile" class="link-spoiler-edit btn btn-secondary">ویرایش اطلاعات</a>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>

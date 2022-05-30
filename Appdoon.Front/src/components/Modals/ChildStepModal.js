@@ -1,7 +1,31 @@
 import React from "react";
 import "../../Modular_Css/ChildStepModal.css";
 
-function ChildStepModal({ setStepId, childStep, setChildStep }) {
+function ChildStepModal({inputFields, setInputFields,childStep, setIdChildStep}) {
+
+  const clear = async() =>{
+    document.getElementById("TitleChildStep").value = childStep.Title;
+    document.getElementById("DescriptionChildStep").value = childStep.Description;
+    document.getElementById("LinkChildStep").value = childStep.Link;
+    document.getElementById("result_message_edit_childstep").innerHTML = null;
+    document.getElementById("result_message_delete_childstep").innerHTML = null;
+
+    setInputFields([]);
+
+    for(let i = 0; i < childStep.Linkers.length; i++){
+        let newfield = { LinkTitle: childStep.Linkers[i].Title, LinkURL: childStep.Linkers[i].Link }
+        await setInputFields(inputFields => [...inputFields, newfield])
+    }
+
+    for(let i = 0; i < childStep.Linkers.length; i++){
+        //alert(document.getElementsByName("LinkTitle")[i].value)
+        document.getElementsByName("LinkTitle")[i].value = childStep.Linkers[i].Title;
+        document.getElementsByName("LinkURL")[i].value = childStep.Linkers[i].Link;
+        
+    }
+  }
+
+
   return (
 
 
@@ -10,7 +34,7 @@ function ChildStepModal({ setStepId, childStep, setChildStep }) {
       
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" onClick={() => {setStepId(0); setChildStep(0);}}>&times;</button>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">{childStep.Title}</h4>
           </div>
           <div class="modal-body">
@@ -24,8 +48,16 @@ function ChildStepModal({ setStepId, childStep, setChildStep }) {
               ))}
             </ol>
           </div>
-          <div class="modal-footer">
-            <a target="_blank" href={childStep.Link}><button type="button" class="btn btn-success">بیشتر ...</button></a>
+          <div class="modal-footer"  >
+            <div style={{width: "100%"}}>
+              <div className="edit_delete">
+                  <button style={{marginLeft:"5px"}} href="#!" data-toggle="modal" data-target={"#editModalChildStep"+childStep.Id} variant="primary" class="btn btn-primary" onClick={() => {clear(); setIdChildStep(childStep.Id);}}><i class="far fa-edit"></i></button>
+                  <button href="#!" data-toggle="modal" data-target={"#deleteModalChildStep"+childStep.Id} variant="primary" class="btn btn-danger" onClick={() => {clear(); setIdChildStep(childStep.Id);}}><i class="far fa-trash-alt"></i></button>
+                  <a style={{float:"left"}} target="_blank" href={childStep.Link}><button type="button" class="btn btn-success">بیشتر بدانید ...</button></a>
+              </div>
+            </div>
+
+
           </div>
         </div>
         
