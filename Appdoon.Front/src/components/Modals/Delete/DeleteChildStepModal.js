@@ -9,7 +9,6 @@ import { Col, Form } from "react-bootstrap";
 import useDelete from '../../Common/useDelete';
 import useUpdate from '../../Common/useUpdate';
 
-import "../../../Modular_Css/EditRoadmapModal.css";
 
 
 function DeleteChildStepModal({ id ,childstep , sensetive ,setSensetive}) {

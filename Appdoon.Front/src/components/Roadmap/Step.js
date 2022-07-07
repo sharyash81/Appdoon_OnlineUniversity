@@ -165,7 +165,7 @@ const Step = ({ step , setInputFields ,key , setIdChildStep, setIdStep, userInfo
                     </div>
                 }
                 
-                <span className={`circle ${(Status == 0 || Status == 1) && HasRoadmap && "Active"}`} />
+                <span className={`circle ${(Status == 0 || Status == 1) && HasRoadmap && "Active"}`}/>
                 
             </div>
         </div>

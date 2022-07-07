@@ -2,6 +2,7 @@
 using Appdoon.Common.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,9 +14,10 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 		public int Id { get; set; }
 		public string Title { get; set; } = string.Empty;
 		public string CreatorName { get; set; } = string.Empty;
-		public DateTime CreateTime { get; set; }
+		public string CreateTime { get; set; }
 		public string TopBannerSrc { get; set; }
 		public string Text { get; set; } = string.Empty;
+		public int CreatorId { get; set; } = 0;
 	}
 	public interface IGetIndividualLessonService
 	{
@@ -40,9 +42,10 @@ namespace Appdoon.Application.Services.Lessons.Query.GetIndividualLessonService
 						Id = r.Id,
 						Title = r.Title,
 						CreatorName = r.Creator.Username,
-						CreateTime = r.InsertTime,
+						CreateTime = r.InsertTime.ToString("yyyy/M/dd", new CultureInfo("fa")),
 						TopBannerSrc = r.TopBannerSrc,
 						Text = r.Text,
+						CreatorId = r.CreatorId,
 					}).FirstOrDefault();
 
 				if(lesson == null)

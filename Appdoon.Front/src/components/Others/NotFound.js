@@ -1,7 +1,13 @@
 import {NavLink} from 'react-router-dom';
+import { useEffect } from 'react';
 
 function NotFound() {
-  return (
+
+    useEffect(() => {
+        document.title = "صفحه پیدا نشد !";
+    }, []);
+
+    return (
     <div class="container-main">
         <div class="col-12">
             <div id="content">
@@ -19,7 +25,7 @@ function NotFound() {
             </div>
         </div>
     </div>
-  );
+    );
 }
 
 export default NotFound;

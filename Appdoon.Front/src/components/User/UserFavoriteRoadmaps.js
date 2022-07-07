@@ -24,6 +24,14 @@ const UserFavoriteRoadmaps = () => {
     const [urlRoadmaps, setUrlRoadmaps] = useState(process.env.REACT_APP_API + 'profile/BookMarkedRoadMaps')
     const {data : roadmaps} = useFetch(urlRoadmaps,sensetive);
 
+    //User
+    const [urlAuth, setUrlAuth] = useState(process.env.REACT_APP_API + "Authentication/InfoFromCookie")
+    const {data : userInfo} = useFetch(urlAuth,sensetive);
+
+    useEffect(() => {
+        document.title = "رودمپ‌های موردعلاقه";
+    }, []);
+
     return(
         cookies.Appdoon_Auth &&
         <div class="container-main">
@@ -51,14 +59,28 @@ const UserFavoriteRoadmaps = () => {
                                         
                                         <li class="profile-account-nav-item navigation-link-dashboard">
                                             <NavLink to="/UserRoadmaps" class=""><i class=""></i>
-                                                لیست رودمپ‌های من
+                                                رودمپ‌های شرکت کرده
                                             </NavLink>
                                         </li>
                                         <li class="profile-account-nav-item navigation-link-dashboard">
                                             <NavLink to="/UserFavoriteRoadmaps" class="active"><i class="active"></i>
-                                                رودمپ‌های مورد علاقه من
+                                                رودمپ‌های مورد علاقه
                                             </NavLink>
                                         </li>
+                                        {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <NavLink to="/UserCreatedRoadmaps" class=""><i class=""></i>
+                                                رودمپ‌های ساخته شده
+                                            </NavLink>
+                                        </li>
+                                        }
+                                        {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <NavLink to="/UserCreatedLessons" class=""><i class=""></i>
+                                                مقالات ساخته شده
+                                            </NavLink>
+                                        </li>
+                                        }
                                         <li class="profile-account-nav-item navigation-link-dashboard">
                                             <NavLink to="/EditProfile" class=""><i class=""></i>
                                                 ویرایش اطلاعات      
@@ -83,12 +105,13 @@ const UserFavoriteRoadmaps = () => {
                         <section class="heightB">
 
                         {roadmaps.length > 0 && (
-                                <div class="heightB">
-                                    {roadmaps.map((data, idx) => (
-                                            
-                                            <UserRoadmapBox data={data} key={idx} />
-                                    ))}
-                                </div>
+                                <div className = "grid-container">
+                                {roadmaps.map((data, idx) => (
+                                    <div class="grid-item">
+                                        <UserRoadmapBox data={data} key={idx} />
+                                    </div>
+                                ))}
+                            </div>
                                 )
                             }
                 

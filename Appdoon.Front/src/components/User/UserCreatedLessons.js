@@ -7,33 +7,44 @@ import UserRoadmapBox from './UserRoadmapBox';
 import { useCookies } from "react-cookie";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import UserLessonpBox from './UserLessonBox';
 
-const UserRoadmaps = () => {
+const UserCreatedLessons = () => {
 
     const [cookies, setCookie] = useCookies(['Appdoon_Auth']);
     const navigate = useNavigate();
-    useEffect(()=>{
-        if(!cookies.Appdoon_Auth){
-            navigate('/login')
-        }
-    },[cookies])
+
 
     const [sensetive, setSensetive] = useState(false);
 
-    //User
-    const [urlRoadmaps, setUrlRoadmaps] = useState(process.env.REACT_APP_API + 'profile/RegisteredRoadMaps')
-    const {data : roadmaps} = useFetch(urlRoadmaps,sensetive);
+
 
     //User
     const [urlAuth, setUrlAuth] = useState(process.env.REACT_APP_API + "Authentication/InfoFromCookie")
     const {data : userInfo} = useFetch(urlAuth,sensetive);
+    useEffect(()=>{
+        if(!cookies.Appdoon_Auth){
+            navigate('/login')
+        }
+
+        if(userInfo.Role){
+            if(!(userInfo.Role == 'Admin' || userInfo.Role == 'Teacher')){
+                navigate('/login')
+            }
+        }
+
+    },[cookies,userInfo])
+
+    //User
+    const [urlLessons, setUrlLessons] = useState(process.env.REACT_APP_API + 'profile/GetCreatedLessons')
+    const {data : lessons} = useFetch(urlLessons,sensetive);
 
     useEffect(() => {
-        document.title = "رودمپ‌های شرکت کرده";
+        document.title = "مقالات ساخته شده";
     }, []);
 
     return(
-        cookies.Appdoon_Auth &&
+        cookies.Appdoon_Auth && (userInfo.Role == 'Admin' || userInfo.Role == 'Teacher') &&
         <div class="container-main">
         <div class="d-block">
             <section class="profile-home">
@@ -58,7 +69,7 @@ const UserRoadmaps = () => {
                                         </li>
                                         
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <NavLink to="/UserRoadmaps" class="active"><i class=""></i>
+                                            <NavLink to="/UserRoadmaps" class=""><i class=""></i>
                                                 رودمپ‌های شرکت کرده
                                             </NavLink>
                                         </li>
@@ -76,7 +87,7 @@ const UserRoadmaps = () => {
                                         }
                                         {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <NavLink to="/UserCreatedLessons" class=""><i class=""></i>
+                                            <NavLink to="/UserCreatedLessons" class="active"><i class=""></i>
                                                 مقالات ساخته شده
                                             </NavLink>
                                         </li>
@@ -105,18 +116,18 @@ const UserRoadmaps = () => {
                     <div class="heightB">
                         <section class="heightB">
 
-                            {roadmaps.length > 0 && (
+                            {lessons.length > 0 && (
                                 <div className = "grid-container">
-                                {roadmaps.map((data, idx) => (
+                                {lessons.map((data, idx) => (
                                     <div class="grid-item">
-                                        <UserRoadmapBox data={data} key={idx} />
+                                        <UserLessonpBox data={data} key={idx} />
                                     </div>
                                 ))}
                                 </div>
                                 )
                             }
                 
-                            {roadmaps.length === 0 && (
+                            {lessons.length === 0 && (
                                 <div>
                                     شما در هیچ رودمپی شرکت نکرده‌اید.
                                 </div>)
@@ -143,4 +154,4 @@ const UserRoadmaps = () => {
 
 }
 
-export default UserRoadmaps;
+export default UserCreatedLessons;

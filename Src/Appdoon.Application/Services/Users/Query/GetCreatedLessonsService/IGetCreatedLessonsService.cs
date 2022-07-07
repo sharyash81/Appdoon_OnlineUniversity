@@ -16,6 +16,7 @@ namespace Appdoon.Application.Services.Users.Query.GetCreatedLessonsService
 		public int Id { get; set; }
 		public string Title { get; set; } = string.Empty;
 		public string CreatorName { get; set; } = string.Empty;
+		public string TopBannerSrc { get; set; } = string.Empty;
 	}
 	public interface IGetCreatedLessonsService
 	{
@@ -71,6 +72,7 @@ namespace Appdoon.Application.Services.Users.Query.GetCreatedLessonsService
 						Id = cl.Id,
 						Title = cl.Title,
 						CreatorName = user.Username,
+						TopBannerSrc = cl.TopBannerSrc,
 					}).ToList();
 
 				return new ResultDto<List<GetLessonsDto>>()

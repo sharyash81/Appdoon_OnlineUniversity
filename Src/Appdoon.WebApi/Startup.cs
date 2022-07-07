@@ -55,6 +55,7 @@ using Appdoon.Application.Services.Users.Query.GetCreatedRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetUserFromCookieService;
 using Appdoon.Application.Services.Users.Query.GetUserService;
+using Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Common.UserRoles;
 using Appdoon.Presistence.Contexts;
@@ -257,6 +258,9 @@ namespace OU_API
 
             // check user has roadmap or not
             services.AddScoped<ICheckUserRegisterRoadmapService,CheckUserRegisterRoadmapService>();
+
+            //
+            services.AddScoped<IIsUserBookMarkedRoadmapService, IsUserBookMarkedRoadmapService>();
 
             // done childstep service
             services.AddScoped<IDoneChildStepService, DoneChildStepService>();

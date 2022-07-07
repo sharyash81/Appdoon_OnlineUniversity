@@ -4,7 +4,6 @@ import useFetch from "../Common/useFetch";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import "../../Modular_Css/EditRoadmapModal.css";
 
 
 function DeleteChildStepModal({id}) {

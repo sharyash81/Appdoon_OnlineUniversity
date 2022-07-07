@@ -2,10 +2,9 @@ import React,{Component, useEffect} from "react";
 import useFetch from '../Common/useFetch';
 import RoadmapBox from "./RoadmapBox";
 import { useState } from "react";
-import "../../Modular_Css/SearchBox.css"
 import CreateRoadmapModal from "../Modals/Create/CreateRoadmapModal";
 import Select from 'react-select';
-import Pagination from "../Pagination";
+import Pagination from "../Common/Pagination";
 
 //componentDidMount() {
 //    document.title = "رودمپ‌ها"; 
@@ -273,6 +272,7 @@ const Roadmaps = () =>{
         container:(provided) => ({
             ...provided,
             minWidth:"300px",
+            textAlign:"right"
         }),
 
         menuList:(provided) => ({
@@ -285,6 +285,10 @@ const Roadmaps = () =>{
         }),
         
     };
+
+    useEffect(() => {
+        document.title = "رودمپ‌ها";
+    }, []);
     
     return(
         <div>
@@ -294,49 +298,51 @@ const Roadmaps = () =>{
             <div class="overlay-search-box"></div>
 
 
+                <main class="main-row mb-2 mt-2">
 
-            <main class="main-row mb-2 mt-2">
-                <div style={{marginTop:"-10px", marginBottom:"60px"}}>
-                    <h1>رودمپ‌ها</h1>
-                </div>
+                    <div class="container-main">
 
-                <div class="container-main">
-                    <div class="d-block">
-                        <div style={{marginTop:"-23px", marginBottom:"20px"}}>
+                        <div style={{display:"flex", justifyContent:"center"}}>
+                            <div class="info-page-faq" style={{marginTop:"-25px" ,width:"98%"}}>
+                                <div id="content-bottom" style={{marginBottom:"-20px"}}>
+
+                                    <div style={{marginTop:"-10px", marginBottom:"40px"}}>
+                                        <h1>رودمپ‌ها</h1>
+                                    </div>
+
+                                    <div style={{marginTop:"-0px", marginBottom:"20px"}}>
 
 
-                            <div style={{float:"left" , marginTop:"0px", marginLeft:"10px", marginBottom:"10px"}}>
-                                {userInfo.Role && (userInfo.Role == "Teacher" || userInfo.Role == "Admin") && <button style={{marginLeft:"10px"}} href="#!" data-toggle="modal" data-target="#createModalRoadmap" variant="success" class="btn btn-success" onClick={() => {clear();}}>افزودن رودمپ‌</button>}
+                                        <div style={{float:"left" , marginTop:"0px", marginLeft:"10px", marginBottom:"10px"}}>
+                                            {userInfo.Role && (userInfo.Role == "Teacher" || userInfo.Role == "Admin") && <button style={{marginLeft:"10px"}} href="#!" data-toggle="modal" data-target="#createModalRoadmap" variant="success" class="btn btn-success" onClick={() => {clear();}}>افزودن رودمپ‌</button>}
+                                        </div>
+
+                                        <div style={{width:"80%", marginRight:"20px"}} class="input-group rounded">
+                                                <input style={{maxWidth:"300px"}} id="search_box_info" dir="rtl" onChange={handleSearch} type="search" class="form-control rounded" placeholder="جستجو کنید ..." aria-label="Search" aria-describedby="search-addon" />
+                                                
+                                                &nbsp;
+                                                &nbsp;
+                                                &nbsp;
+                                                {categories && (
+                                                    <Select
+                                                        menuPlacement="bottom"
+                                                        placeholder="دسته‌ها را انتخاب کنید ..."
+                                                        isMulti={true}
+                                                        value={filterSelectedOptions}
+                                                        onChange={handleChange}
+                                                        options={options}
+                                                        styles={customStyleForTestsList}
+                                                    />
+                                                    )
+                                                }
+
+                                                
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div style={{width:"80%", marginRight:"20px"}} class="input-group rounded">
-                                    <input style={{maxWidth:"300px"}} id="search_box_info" dir="rtl" onChange={handleSearch} type="search" class="form-control rounded" placeholder="جستجو کنید ..." aria-label="Search" aria-describedby="search-addon" />
-                                    
-                                    &nbsp;
-                                    &nbsp;
-                                    &nbsp;
-                                    {categories && (
-                                        <Select 
-                                            menuPlacement="bottom"
-                                            placeholder="دسته‌ها را انتخاب کنید ..."
-                                            isMulti={true}
-                                            value={filterSelectedOptions}
-                                            onChange={handleChange}
-                                            options={options}
-                                            styles={customStyleForTestsList}
-                                        />
-                                        )
-                                    }
-
-                                    
-                            </div>
-
-                            <div style={{display:"flex", width:"25%"}}>
-
-                            </div>
-
+                            
                         </div>
-
 
 
                         <section class="content-widget">
@@ -403,19 +409,19 @@ const Roadmaps = () =>{
 
                         </section>
                         <Pagination handlePageNumber={handlePageNumber} pageNumber={pageNumber} allPagesNumber={allPagesNumber}/>
+                    
                     </div>
-                </div>
-            </main>
-
+                </main>
 
             
 
-
+            {/*
             <div class="progress-wrap">
                 <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
                     <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
                 </svg>
             </div>
+            */}
 
 
 

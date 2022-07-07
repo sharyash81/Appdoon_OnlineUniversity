@@ -50,7 +50,7 @@ h1 {
 
 
 .timeline-container::before {
-    background-color: rgb(101, 31, 255, 0.6);
+    background-color: rgb(101, 31, 255, 0.5);
     box-shadow: 0 0 12px #651fff;
     content: '';
     position: absolute;
@@ -69,6 +69,7 @@ h1 {
     position: relative;
     margin: 10px 0;
     width: 50%;
+    
     
 }
 

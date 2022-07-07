@@ -58,6 +58,14 @@ const EditProfile = () => {
         const [resmess, colormess] = await useUpdate(urlput,body,headers);
         HandleMessage(resmess,colormess);
     }
+
+    //User
+    const [urlAuth, setUrlAuth] = useState(process.env.REACT_APP_API + "Authentication/InfoFromCookie")
+    const {data : userInfo} = useFetch(urlAuth,sensetive);
+
+    useEffect(() => {
+        document.title = "ویرایش اطلاعات";
+    }, []);
     
     return(
         cookies.Appdoon_Auth &&
@@ -85,14 +93,28 @@ const EditProfile = () => {
                                         
                                         <li class="profile-account-nav-item navigation-link-dashboard">
                                             <NavLink to="/UserRoadmaps" class=""><i class=""></i>
-                                                لیست رودمپ‌های من
+                                                رودمپ‌های شرکت کرده
                                             </NavLink>
                                         </li>
                                         <li class="profile-account-nav-item navigation-link-dashboard">
                                             <NavLink to="/UserFavoriteRoadmaps" class=""><i class=""></i>
-                                                رودمپ‌های مورد علاقه من
+                                                رودمپ‌های مورد علاقه
                                             </NavLink>
                                         </li>
+                                        {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <NavLink to="/UserCreatedRoadmaps" class=""><i class=""></i>
+                                                رودمپ‌های ساخته شده
+                                            </NavLink>
+                                        </li>
+                                        }
+                                        {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <NavLink to="/UserCreatedLessons" class=""><i class=""></i>
+                                                مقالات ساخته شده
+                                            </NavLink>
+                                        </li>
+                                        }
                                         <li class="profile-account-nav-item navigation-link-dashboard">
                                             <NavLink to="/EditProfile" class="active"><i class=""></i>
                                                 ویرایش اطلاعات

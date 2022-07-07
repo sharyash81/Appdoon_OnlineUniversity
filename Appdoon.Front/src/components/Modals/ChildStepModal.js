@@ -1,5 +1,4 @@
 import React from "react";
-import "../../Modular_Css/ChildStepModal.css";
 
 function ChildStepModal({inputFields, setInputFields,childStep, setIdChildStep, userInfo, CreatorId}) {
 

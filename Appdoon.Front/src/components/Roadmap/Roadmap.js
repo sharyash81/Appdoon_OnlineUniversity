@@ -20,6 +20,7 @@ import DeleteChildStepModal from "../Modals/Delete/DeleteChildStepModal";
 import CreateRoadmapModal from "../Modals/Create/CreateRoadmapModal";
 import CreateStepModal from "../Modals/Create/CreateStepModal";
 import CreateChildStepModal from "../Modals/Create/CreateChildStepModal";
+import useCreate from "../Common/useCreate";
 
 const Roadmap = () => {
 
@@ -126,6 +127,9 @@ const Roadmap = () => {
     const [inputFields, setInputFields] = useState([]);
     const [editInputFields, setEditInputFields] = useState([]);
 
+    useEffect(() => {
+        document.title = "رودمپ "+roadmap.Title;
+    }, [roadmap]);
 
     const HandleEnroll = async() => {
         if(!userInfo.Role){
@@ -175,6 +179,39 @@ const Roadmap = () => {
         }
     }
 
+    const [urlBookmarkRoadmap, setUrlBookmarkRoadmap] = useState(process.env.REACT_APP_API + 'roadmap/BookmarkRoadmap/'+id);
+    const [urlIsUserBookmarkedRoadmap, setUrlIsUserBookmarkedRoadmap] = useState(process.env.REACT_APP_API + 'roadmap/IsUserBookMarkedRoadmap/'+id);
+
+    const {data : IsUserBookmarkedRoadmap} = useFetch(urlIsUserBookmarkedRoadmap,sensetive);
+
+    const BookMark = async() =>{
+
+        await fetch(urlBookmarkRoadmap, {method:"POST", credentials:"include"})
+            .then(res => {
+                if(!res.ok){
+                    throw Error('could not fetch!');
+                }
+                return res.json();
+            })
+            .then(data => {
+                
+            })
+            .catch(err => {
+                
+                if(err.name === 'AbortError'){
+                    console.log('fetch aborted');
+                }
+                else{
+                    
+                    console.log(err.message);
+                }
+            })
+
+        setSensetive(!sensetive);
+
+    }
+    
+
     
     return(
 
@@ -213,9 +250,28 @@ const Roadmap = () => {
                 
             </div>
             }
+
+            
+
+            {userInfo.Role && IsUserBookmarkedRoadmap &&
+            <div style={{float:"right" , marginTop:"20px", marginBottom:"10px", marginRight:"20px"}}>
+
+                <button style={{backgroundColor:"white", color:"black"}} href="#!" class="btn btn-dark" onClick={() => {BookMark();}}><i style={{color:"red", marginTop:"5px"}} class="fas fa-heart"></i></button>
+                
+            </div>
+            }
+
+            {userInfo.Role && !IsUserBookmarkedRoadmap &&
+            <div style={{float:"right" , marginTop:"20px", marginBottom:"10px", marginRight:"20px"}}>
+
+                <button style={{backgroundColor:"white", color:"black"}} href="#!" class="btn btn-dark" onClick={() => {BookMark();}}><i style={{marginTop:"4px"}} class="far fa-heart"></i></button>
+                
+            </div>
+            }
+
             {roadmap && roadmap.Id > 0 && (
                 
-                <div className='timelineBody'>
+                <div style={{paddingBottom:"50px"}} className='timelineBody'>
                     
 
                     <h1 dir="rtl">رودمپ {roadmap.Title}</h1>
@@ -224,7 +280,7 @@ const Roadmap = () => {
                     
                     {userInfo.Role && !HasRoadmap && (userInfo.Role != "Admin" && userInfo.Id != roadmap.CreatorId) && <p>.برای شروع یادگیری این رودمپ همین حالا روی <button onClick={() => HandleEnroll()} type="button" class="btn btn-primary" style={{paddingBottom:"13px", backgroundColor:"#651fff", borderRadius:"50%"}}>شروع</button> کلیک کن</p>}
 
-                    <span className={`BigCircle ${HasRoadmap && "Active"}`} style={{marginBottom:"-40px"}}>
+                    <span className={`BigCircle ${HasRoadmap && "Active"}`} style={{marginBottom:"-40px", marginTop:"10px"}}>
                         <p style={{marginTop:"12px"}}><button onClick={() => HandleEnroll()} type="button" style={{backgroundColor:"rgb(255, 255, 255, 0)"}}>شروع</button></p>
                     </span>
                     
@@ -232,10 +288,11 @@ const Roadmap = () => {
                         
                         {(inProgressStepId !== null || !HasRoadmap) && roadmap.Steps.map((step, idx) => (
                             <Step setInputFields={setInputFields} step={step} key={idx} setIdChildStep={setIdChildStep} setIdStep={setIdStep} userInfo={userInfo} CreatorId = {roadmap.CreatorId} HasRoadmap={HasRoadmap} Status={HasRoadmap && CreateStatus(step.StepProgresses[0].IsDone,idx)} sensetive={sensetive} setSensetive ={setSensetive}/>
-                        ))}
+                        ))
+                        }
                     </div>
 
-                    <span className="BigCircle" style={{marginTop:"-40px"}}>
+                    <span className={`BigCircle ${HasRoadmap && ""}`} style={{marginTop:"-40px"}}>
                         <p style={{marginTop:"12px"}}>پایان</p>
                     </span>
                     
@@ -250,6 +307,7 @@ const Roadmap = () => {
             }
 
 
+            
             
         </div>
 

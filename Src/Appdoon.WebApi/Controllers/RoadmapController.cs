@@ -11,6 +11,7 @@ using Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService;
 using Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService;
+using Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService;
 using Appdoon.Domain.Entities.RoadMaps;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -53,6 +54,8 @@ namespace Appdoon.WebApi.Controllers
 
 		private readonly IDoneChildStepService _doneChildStepService;
 
+		public readonly IIsUserBookMarkedRoadmapService _isUserBookMarkedRoadmapService;
+
 		private readonly IWebHostEnvironment _env;
 
 
@@ -69,6 +72,7 @@ namespace Appdoon.WebApi.Controllers
 								  ICheckUserRegisterRoadmapService checkUserRegisterRoadmapService,
 								  IGetPreviewRoadmapService getPreviewRoadmapService,
 								  IDoneChildStepService doneChildStepService,
+								  IIsUserBookMarkedRoadmapService isUserBookMarkedRoadmapService,
 								  IWebHostEnvironment env)
 		{
 			_getAllRoadmapsService = getAllRoadmapsService;
@@ -84,6 +88,7 @@ namespace Appdoon.WebApi.Controllers
 			_checkUserRegisterRoadmapService = checkUserRegisterRoadmapService;
 			_getPreviewRoadmapService = getPreviewRoadmapService;
 			_doneChildStepService = doneChildStepService;
+			_isUserBookMarkedRoadmapService = isUserBookMarkedRoadmapService;
 			_env = env;
 		}
 
@@ -181,12 +186,20 @@ namespace Appdoon.WebApi.Controllers
 			return new JsonResult(result);
 		}
 
-		[HttpPost]
+		[HttpPost("{RoadmapId}")]
 		public JsonResult BookmarkRoadmap(int RoadmapId)
 		{
 			int userId= GetIdFromCookie();
 			var result=_bookmarkRoadmapService.Execute(RoadmapId, userId);
 
+			return new JsonResult(result);
+		}
+
+		[HttpGet("{RoadmapId}")]
+		public JsonResult IsUserBookMarkedRoadmap(int RoadmapId)
+		{
+			int userId = GetIdFromCookie();
+			var result = _isUserBookMarkedRoadmapService.Execute(RoadmapId, userId);
 			return new JsonResult(result);
 		}
 

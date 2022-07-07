@@ -2,7 +2,7 @@ import React,{Component, useEffect} from "react";
 import {NavLink} from 'react-router-dom';
 import { useCookies } from "react-cookie";
 import { useNavigate } from 'react-router-dom';
-import useCreate from "./Common/useCreate";
+import useCreate from "../Common/useCreate";
 import { useState } from "react";
 import $ from 'jquery';
 
@@ -47,6 +47,9 @@ const ForgetPassword = () => {
         HandleMessage(resmess,colormess);
     }
 
+    useEffect(() => {
+        document.title = "فراموشی رمز عبور";
+    }, []);
 
     return (
         !cookies.Appdoon_Auth &&

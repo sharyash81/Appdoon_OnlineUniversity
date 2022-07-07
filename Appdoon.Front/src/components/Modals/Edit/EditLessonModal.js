@@ -9,13 +9,6 @@ import { Col, Form } from "react-bootstrap";
 import useDelete from '../../Common/useDelete';
 import useUpdate from '../../Common/useUpdate';
 import $ from 'jquery';
-import Select from 'react-select';
-
-import "../../../Modular_Css/EditRoadmapModal.css";
-
-import chroma from 'chroma-js';
-
-import { StylesConfig } from 'react-select';
 
 function EditLessonModal({ id, lesson, sensetive, setSensetive }) {
 

@@ -19,6 +19,9 @@ const Register = () => {
         }
     },[cookies])
 
+    useEffect(() => {
+        document.title = "ثبت نام";
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();
