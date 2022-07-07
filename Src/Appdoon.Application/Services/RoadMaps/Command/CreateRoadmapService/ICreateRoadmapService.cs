@@ -16,7 +16,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
 {
     public interface ICreateRoadmapService
     {
-        ResultDto Execute(HttpRequest httpRequest, string currentpath);
+        ResultDto Execute(HttpRequest httpRequest, string currentpath, int CreatorId);
     }
     public class CreateRoadMapIndividualService : ICreateRoadmapService
     {
@@ -28,7 +28,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
             _context = context;
             _environment = environment;
         }
-        public ResultDto Execute(HttpRequest httpRequest, string currentpath)
+        public ResultDto Execute(HttpRequest httpRequest, string currentpath, int CreatorId)
         {
             try
             {
@@ -64,12 +64,23 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                 var imageSrc = "";
                 var TimeNow = DateTime.Now;
                 var ImageName = Title + "_" + TimeNow.Ticks.ToString();
-
+                // we should check create those file is 
+                // they not exist !!!!!!
                 if (httpRequest.Form.Files.Count() != 0)
                 {
                     var postedFile = httpRequest.Form.Files[0];
                     string filename = postedFile.FileName;
+
+                    // create Photoes\Roadmap\ folder
+                    string folder = @$"Photos\Roadmap\";
+                    var uploadFolder = Path.Combine(currentpath, folder);
+					if(Directory.Exists(uploadFolder) == false)
+					{
+                        Directory.CreateDirectory(uploadFolder);
+					}
+
                     var physicalPath = currentpath + "/Photos/Roadmap/" + $"({ImageName})" + filename;
+
                     using (var stream = new FileStream(physicalPath, FileMode.Create))
                     {
                         postedFile.CopyTo(stream);
@@ -94,6 +105,20 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                 }
 
                 //////////////////////
+                ///
+
+                var creator = _context.Users
+                    .Where(c => c.Id == CreatorId)
+                    .FirstOrDefault();
+
+                if(creator == null)
+                {
+                    return new ResultDto()
+                    {
+                        IsSuccess = false,
+                        Message = "کاربر پیدا نشد!",
+                    };
+                }
 
 
                 var roadmap = new RoadMap()
@@ -102,6 +127,7 @@ namespace Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService
                     Description = Description.ToString(),
                     ImageSrc = imageSrc,
                     Categories = categories,
+                    Creatore = creator,
                 };
 
                 // validate inputes

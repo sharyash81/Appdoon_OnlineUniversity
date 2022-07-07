@@ -2,8 +2,6 @@ import React from "react";
 import { useState } from "react";
 import useUpdate from '../../Common/useUpdate';
 
-import "../../../Modular_Css/EditRoadmapModal.css";
-
 function EditChildStepModal({ id, inputFields, setInputFields, childstep, sensetive, setSensetive }) {
 
     const [urlput, setUrlPost] = useState(process.env.REACT_APP_API + "childstep/");

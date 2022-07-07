@@ -10,6 +10,10 @@ using Appdoon.Application.Services.ChildSteps.Command.DeleteChildStepService;
 using Appdoon.Application.Services.ChildSteps.Command.UpdateChildStepService;
 using Appdoon.Application.Services.ChildSteps.Query.GetAllChildStepsService;
 using Appdoon.Application.Services.ChildSteps.Query.GetIndividualChildStepService;
+using Appdoon.Application.Services.Homeworks.Command.CreateHomeworkService;
+using Appdoon.Application.Services.Homeworks.Command.DeleteHomeworkService;
+using Appdoon.Application.Services.Homeworks.Command.UpdateHomeworkService;
+using Appdoon.Application.Services.Homeworks.Query.GetHomeworkService;
 using Appdoon.Application.Services.Lessons.Command.CreateLessonService;
 using Appdoon.Application.Services.Lessons.Command.DeleteLessonService;
 using Appdoon.Application.Services.Lessons.Command.UpdateLessonService;
@@ -21,25 +25,42 @@ using Appdoon.Application.Services.Linkers.Command.DeleteLinkerService;
 using Appdoon.Application.Services.Linkers.Command.UpdateLinkerService;
 using Appdoon.Application.Services.Linkers.Query.GetAllLinkersService;
 using Appdoon.Application.Services.Linkers.Query.GetIndividualLinkerService;
+using Appdoon.Application.Services.Progress.Command.DoneChildStep;
+using Appdoon.Application.Services.Progress.Command.DoneHomeworkService;
 using Appdoon.Application.Services.Roadmaps.Command.CreateRoadmapService;
 using Appdoon.Application.Services.Roadmaps.Command.DeleteRoadmapService;
 using Appdoon.Application.Services.Roadmaps.Command.UpdateRoadmapService;
 using Appdoon.Application.Services.Roadmaps.Query.GetAllRoadmapsService;
 using Appdoon.Application.Services.Roadmaps.Query.GetIndividualRoadmapService;
+using Appdoon.Application.Services.RoadMaps.Command.BookmarkRoadmapService;
+using Appdoon.Application.Services.RoadMaps.Command.RegisterRoadmapService;
+using Appdoon.Application.Services.RoadMaps.Query.CheckUserRegisterRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.FilterRoadmapsService;
+using Appdoon.Application.Services.RoadMaps.Query.GetPreviewRoadmapService;
+using Appdoon.Application.Services.RoadMaps.Query.GetUserRoadmapService;
 using Appdoon.Application.Services.RoadMaps.Query.SearchRoadmapsService;
 using Appdoon.Application.Services.Steps.Command.CreateStepService;
 using Appdoon.Application.Services.Steps.Command.DeleteStepService;
 using Appdoon.Application.Services.Steps.Command.UpdateStepService;
 using Appdoon.Application.Services.Steps.Query.GetAllStepService;
 using Appdoon.Application.Services.Steps.Query.GetIndividualStepService;
+
+using Appdoon.Application.Services.Users.Command.CheckUserResetPasswordLinkService;
+
+using Appdoon.Application.Services.Users.Command.EditPasswordService;
+
 using Appdoon.Application.Services.Users.Command.EditUserService;
+using Appdoon.Application.Services.Users.Command.ForgetPasswordUserService;
 using Appdoon.Application.Services.Users.Command.LoginUserService;
 using Appdoon.Application.Services.Users.Command.RegisterUserService;
+using Appdoon.Application.Services.Users.Command.ResetPasswordService;
 using Appdoon.Application.Services.Users.Query.GetBookMarkRoadMapService;
+using Appdoon.Application.Services.Users.Query.GetCreatedLessonsService;
+using Appdoon.Application.Services.Users.Query.GetCreatedRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetRegisteredRoadMapService;
 using Appdoon.Application.Services.Users.Query.GetUserFromCookieService;
 using Appdoon.Application.Services.Users.Query.GetUserService;
+using Appdoon.Application.Services.Users.Query.IsUserBookMarkedRoadmapService;
 using Appdoon.Application.Validatores.UserValidatore;
 using Appdoon.Common.UserRoles;
 using Appdoon.Presistence.Contexts;
@@ -48,22 +69,16 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace OU_API
 {
@@ -86,23 +101,12 @@ namespace OU_API
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("MyMyAllowCredentialsPolicy",
-            //        policy =>
-            //        {
-            //            policy.WithOrigins("http://localhost3000")
-            //                   .AllowAnyMethod()
-            //                   .AllowAnyHeader()
-            //                   .AllowCredentials();
-            //        });
-            //});
 
             services.AddCors(options =>
                 options.AddPolicy("Dev", builder =>
                 {
                     // Allow multiple methods  
-                    builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS")
+                    builder.WithMethods("GET", "POST", "PATCH", "DELETE", "OPTIONS", "PUT")
                     .WithHeaders(
                         HeaderNames.Accept,
                         HeaderNames.ContentType,
@@ -137,7 +141,7 @@ namespace OU_API
             }).AddCookie(options =>
             {
                 // Set correct path
-                options.LoginPath = new PathString("/Authentication/Login");
+                options.LoginPath = new PathString("/api/Authentication/Login");
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(500.0);
                 options.Cookie.Name = "Appdoon_Auth";
                 options.Cookie.HttpOnly = false;
@@ -171,6 +175,7 @@ namespace OU_API
             services.AddScoped<IDatabaseContext, DatabaseContext>();
 
 
+            services.AddScoped<IEditPasswordService, EditPasswordService>();
 
 
             // 
@@ -241,18 +246,49 @@ namespace OU_API
             services.AddScoped<IDeleteStepService, DeleteStepService>();
             services.AddScoped<IUpdateStepService, UpdateStepService>();
 
+            // right service for getting roadmaps of user
+            services.AddScoped<IGetUserRoadmapService, GetUserRoadmapService>();
+
             //Dependency Injecton For Profile
             services.AddScoped<IGetUserFromCookieService, GetUserFromCookieService>();
 
 
+            //forget and reset password
+            services.AddScoped<IForgetPasswordUserService, ForgetPasswordUserService>();
+            services.AddScoped<ICheckUserResetPasswordLinkService, CheckUserResetPasswordLinkService>();
+            services.AddScoped<IResetPasswordService, ResetPasswordService>();
 
+            // register roadmap
+            services.AddScoped<IRegisterRoadmapService, RegisterRoadmapService>();
 
+            // check user has roadmap or not
+            services.AddScoped<ICheckUserRegisterRoadmapService, CheckUserRegisterRoadmapService>();
 
+            //
+            services.AddScoped<IIsUserBookMarkedRoadmapService, IsUserBookMarkedRoadmapService>();
 
+            // done childstep service
+            services.AddScoped<IDoneChildStepService, DoneChildStepService>();
 
+            // get preview of roadmap for not register users
+            services.AddScoped<IGetPreviewRoadmapService, GetPreviewRoadmapService>();
 
+            // bookmark roadmap service
+            services.AddScoped<IBookmarkRoadmapService, BookmarkRoadmapService>();
 
+            //homework
+            services.AddScoped<IGetHomeworkService, GetHomeworkService>();
+            services.AddScoped<ICreateHomeworkService, CreateHomeworkService>();
+            services.AddScoped<IUpdateHomeworkService, UpdateHomeworkService>();
+            services.AddScoped<IDeleteHomeworkService, DeleteHomeworkService>();
 
+            services.AddScoped<IDoneHomeworkService, DoneHomeworkService>();
+
+            // get created roadmaps service
+            services.AddScoped<IGetCreatedRoadMapService, GetCreatedRoadMapService>();
+
+            // get created lessons service
+            services.AddScoped<IGetCreatedLessonsService, GetCreatedLessonsService>();
 
 
             // Injection for user validatore
@@ -269,19 +305,12 @@ namespace OU_API
         {
             //app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseCors("Dev");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OU_API v1"));
-            }
-
-            //db.Database.Migrate();
-
-            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                context.Database.EnsureCreated();
             }
 
             app.UseHttpsRedirection();

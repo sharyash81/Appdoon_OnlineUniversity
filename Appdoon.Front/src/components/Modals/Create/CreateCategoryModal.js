@@ -2,20 +2,6 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 
 import { useState } from "react";
-import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import useFetch from '../../Common/useFetch';
-import { Col, Form } from "react-bootstrap";
-import useDelete from '../../Common/useDelete';
-import useUpdate from '../../Common/useUpdate';
-import $ from 'jquery';
-import Select from 'react-select';
-
-import "../../../Modular_Css/EditRoadmapModal.css";
-
-import chroma from 'chroma-js';
-
-import { StylesConfig } from 'react-select';
 import useCreate from "../../Common/useCreate";
 
 function CreateCategoryModal({ id, sensetive, setSensetive }) {

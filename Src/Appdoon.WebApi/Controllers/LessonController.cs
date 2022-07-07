@@ -53,9 +53,9 @@ namespace Appdoon.WebApi.Controllers
 
         // GET: api/<LessonController>
         [HttpGet]
-        public JsonResult Get(int page_number, int page_size)
+        public JsonResult Get(int PageNumber, int PageSize)
         {
-            var result = _getAllLessonsService.Execute(page_number, page_size);
+            var result = _getAllLessonsService.Execute(PageNumber, PageSize);
             return new JsonResult(result);
         }
 
@@ -71,7 +71,9 @@ namespace Appdoon.WebApi.Controllers
         [HttpPost]
         public JsonResult Post()
         {
-            var result = _createLessonService.Execute(Request, _env.ContentRootPath);
+            var userId = GetIdFromCookie();
+
+            var result = _createLessonService.Execute(Request, _env.ContentRootPath, userId);
             return new JsonResult(result);
         }
 
@@ -93,10 +95,36 @@ namespace Appdoon.WebApi.Controllers
 
         // GET api/<LessonController>
         [HttpGet]
-        public JsonResult Search(string searched_text, int page_number, int page_size)
+        public JsonResult Search(string SearchedText, int PageNumber, int PageSize)
         {
-            var result = _searchLessonsService.Execute(searched_text, page_number, page_size);
+            var result = _searchLessonsService.Execute(SearchedText, PageNumber, PageSize);
             return new JsonResult(result);
+        }
+
+        private int GetIdFromCookie()
+        {
+            try
+            {
+                if(HttpContext.User.Identities.FirstOrDefault().Claims.FirstOrDefault() == null)
+                {
+                    return -1;
+                }
+
+                var IdStr = HttpContext.User.Identities
+                    .FirstOrDefault()
+                    .Claims
+                    //.Where(c => c.Type == "NameIdentifier")
+                    .FirstOrDefault()
+                    .Value;
+
+                int Id = int.Parse(IdStr);
+                return Id;
+            }
+            catch(Exception e)
+            {
+                return -1;
+            }
+
         }
     }
 }

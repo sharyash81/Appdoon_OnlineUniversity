@@ -19,11 +19,13 @@ namespace Appdoon.Domain.Entities.Users
         public string Password { get; set; } = string.Empty;
 		public string? PhoneNumber { get; set; }
 		public List<Role> Roles { get; set; } = new();
-		public List<RoadMap>? SignedRoadMaps { get; set; }
-		public List<RoadMap>? BookmarkedRoadMaps { get; set; }
-		public List<RoadMap>? CreatedRoadMaps { get; set; }
+		public List<RoadMap> SignedRoadMaps { get; set; } = new();
+		public List<RoadMap> BookmarkedRoadMaps { get; set; } = new();
+		public List<RoadMap> CreatedRoadMaps { get; set; } = new();
 
-		public List<StepProgress>? StepProgresses { get; set; }
-		public List<ChildStepProgress>? ChildStepProgresses { get; set; }
+		public List<StepProgress> StepProgresses { get; set; } = new();
+		public List<ChildStepProgress> ChildStepProgresses { get; set; } = new();
+		public List<HomeworkProgress> HomeworkProgresses { get; set; } = new();
+		public List<Lesson> CreatedLessons { get; set; } = new();
 	}
 }

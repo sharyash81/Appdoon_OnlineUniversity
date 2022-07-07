@@ -50,7 +50,7 @@ h1 {
 
 
 .timeline-container::before {
-    background-color: rgb(101, 31, 255, 0.6);
+    background-color: rgb(101, 31, 255, 0.5);
     box-shadow: 0 0 12px #651fff;
     content: '';
     position: absolute;
@@ -69,6 +69,7 @@ h1 {
     position: relative;
     margin: 10px 0;
     width: 50%;
+    
     
 }
 
@@ -96,6 +97,10 @@ h1 {
     width: 500px;
     max-width: 80%;
     text-align: right;
+}
+
+.NotActive{
+    opacity: 0.5;
 }
 
 .hi1
@@ -266,6 +271,27 @@ h1 {
     width: 20px;
     height: 20px;
     z-index: 200;
+}
+.timeline-item-content .Active {
+    background-color: rgb(165, 123, 255);
+}
+
+
+.BigCircle {
+    text-align: center;
+    background-color: rgb(255, 255, 255);
+    border: 4px solid rgb(101, 31, 255, 0.5);
+    border-radius: 50%;
+    top: calc(50% - 10px);
+    left: -40px;
+    width: 60px;
+    height: 60px;
+    z-index: 200;
+    box-shadow: 0 0 12px #651fff;
+}
+
+.Active{
+    background-color: rgb(101, 31, 255, 0.5);
 }
 
 
