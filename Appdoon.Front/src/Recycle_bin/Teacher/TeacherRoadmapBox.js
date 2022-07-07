@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { Button } from 'bootstrap';
-import useFetch from '../Common/useFetch';
+import useFetch from '../../Components/Common/useFetch';
 
 
 const TeacherRoadmapBox = ({ data:roadmap }) => {

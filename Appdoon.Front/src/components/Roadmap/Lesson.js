@@ -11,13 +11,15 @@ import EditLessonModal from "../Modals/Edit/EditLessonModal";
 
 const Lesson = () => {
 
-
-
     const {id} = useParams();
     const [sensetive, setSensetive] = useState(false);
     const [url, setUrl] = useState(process.env.REACT_APP_API + 'lesson/get/'+id);
     const {data : lesson} = useFetch(url,sensetive);
     const photopath = process.env.REACT_APP_PHOTOPATH + "lesson/";
+
+    //User
+    const [urlAuth, setUrlAuth] = useState(process.env.REACT_APP_API + "Authentication/InfoFromCookie")
+    const {data : userInfo} = useFetch(urlAuth,sensetive);
 
     const clear = () =>{
         document.getElementById("TitleLesson").value = lesson.Title;
@@ -29,33 +31,55 @@ const Lesson = () => {
         document.getElementById("PreviewPhotoLesson").src = photopath+lesson.TopBannerSrc;
     }
 
+    useEffect(() => {
+        document.title = "مقاله "+lesson.Title;
+    }, [lesson]);
+
     return(
         <div>
             {<EditLessonModal id={"editModalLesson"} lesson = {lesson} sensetive = {sensetive} setSensetive = {setSensetive}/>}
             {<DeleteLessonModal id={"deleteModalLesson"} lesson = {lesson} sensetive = {sensetive} setSensetive = {setSensetive}/>}
             <main class="main-row mb-2 mt-2 d-block">
                 <div class="container-main">
+
                     <div class="d-block">
+
+
+
                         <div class="col-lg-9 col-md-8 col-xs-12 pr mt-3">
+                            
 
                             {lesson && lesson.Id > 0 &&
                                 <section class="blog-home">
+                                    <div style={{display:"flex", justifyContent:"center"}}>
+                                        <div class="post-item" style={{marginTop:"-25px",marginBottom:"20px" ,width:"100%"}}>
+                                            <div id="content-bottom" style={{marginBottom:"-20px"}}>
+                                                <div style={{marginTop:"-30px", marginBottom:"15px"}}>
+                                                    <h1>{lesson.Title}</h1>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     
                                     <article class="post-item">
-                                        <div style={{float:"left" , marginTop:"-5px", marginLeft:"5px", marginBottom:"10px"}}>
+                                        {userInfo.Role && (userInfo.Id == lesson.CreatorId || userInfo.Role == "Admin") &&
+                                        <div style={{float:"left" , marginTop:"-10px", marginLeft:"10px", marginBottom:"10px"}}>
 
                                             <button style={{marginLeft:"10px"}} href="#!" data-toggle="modal" data-target="#editModalLesson" variant="primary" class="btn btn-primary" onClick={() => {clear();}}><i class="far fa-edit"></i></button>
                                             <button href="#!" data-toggle="modal" data-target="#deleteModalLesson" variant="primary" class="btn btn-danger" onClick={() => {clear();}}><i class="far fa-trash-alt"></i></button>
 
                                         </div>
+                                        }
                                         <header class="entry-header mb-3">
                                             <div class="post-meta date">
-                                                <i class="mdi mdi-calendar-month"></i>1399/02/14
+                                                <i class="mdi mdi-calendar-month"></i>&nbsp;
+                                                {lesson.CreateTime}
                                             </div>
                                             <div class="post-meta author">
-                                                <i class="mdi mdi-account-circle-outline"></i>
-                                                ارسال شده توسط <a href="#"> مدیریت </a>
+                                                <i class="mdi mdi-account-circle-outline"></i>&nbsp;
+                                                نوشته <a href="#!"> {lesson.CreatorName} </a>
                                             </div>
+                                            {/*
                                             <div class="post-meta category">
                                                 <i class="mdi mdi-folder"></i>
                                                 <a href="#">دسته‌بندی نشده</a> ، <a href="#">بازی آنلاین</a> ، <a href="#">معرفی
@@ -65,6 +89,7 @@ const Lesson = () => {
                                                 <i class="mdi mdi-eye"></i>
                                                 996 بازدید
                                             </div>
+                                            */}
                                         </header>
                                         <div class="post-thumbnail">
                                             <img src={photopath+lesson.TopBannerSrc} alt={lesson.Title}/>
@@ -80,6 +105,7 @@ const Lesson = () => {
                                             </p>
                                         </div>
                                     </article>
+                                    {/*
                                     <div class="post-comments">
                                         <div class="comments-area">
                                             <h2 class="comments-title">
@@ -148,17 +174,22 @@ const Lesson = () => {
                                             </div>
                                         </div>
                                     </div>
+
+                                    */}
                                 </section>
                             }
                             {lesson && lesson.Id == 0 &&
                                 <h1>این مقاله موجود نمی‌باشد!</h1>
                             }
                         </div>
-                        <div class="col-lg-3 col-md-4 col-xs-12 pr mt-3 sticky-sidebar">
-                            <div class="shortcode-widget-area-sidebar">
+
+
+
+                        <div class="col-lg-3 col-md-4 col-xs-12 pr mt-3"  >
+                            <div class="shortcode-widget-area-sidebar" style={{marginTop:"-25px"}}>
                                 <section class="widget-posts">
                                     <div class="header-sidebar mb-3">
-                                        <h3>مقالات مرتبط</h3>
+                                        <h3>مقالات برتر</h3>
                                     </div>
 
                                     <div class="content-sidebar">

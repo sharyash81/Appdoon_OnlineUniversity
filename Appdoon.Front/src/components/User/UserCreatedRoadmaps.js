@@ -8,33 +8,47 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-const UserRoadmaps = () => {
+import '../../Modular_Css/UserCreatedRoadmap.css';
+
+
+const UserCreatedRoadmaps = () => {
 
     const [cookies, setCookie] = useCookies(['Appdoon_Auth']);
     const navigate = useNavigate();
-    useEffect(()=>{
-        if(!cookies.Appdoon_Auth){
-            navigate('/login')
-        }
-    },[cookies])
 
     const [sensetive, setSensetive] = useState(false);
 
-    //User
-    const [urlRoadmaps, setUrlRoadmaps] = useState(process.env.REACT_APP_API + 'profile/RegisteredRoadMaps')
-    const {data : roadmaps} = useFetch(urlRoadmaps,sensetive);
+
 
     //User
     const [urlAuth, setUrlAuth] = useState(process.env.REACT_APP_API + "Authentication/InfoFromCookie")
     const {data : userInfo} = useFetch(urlAuth,sensetive);
 
+    useEffect(()=>{
+        if(!cookies.Appdoon_Auth){
+            navigate('/login')
+        }
+
+        if(userInfo.Role){
+            if(!(userInfo.Role == 'Admin' || userInfo.Role == 'Teacher')){
+                navigate('/login')
+            }
+        }
+
+    },[cookies,userInfo])
+
+    //User
+    const [urlRoadmaps, setUrlRoadmaps] = useState(process.env.REACT_APP_API + 'profile/GetCreatedRoadmaps')
+    const {data : roadmaps} = useFetch(urlRoadmaps,sensetive);
+
     useEffect(() => {
-        document.title = "رودمپ‌های شرکت کرده";
+        document.title = "رودمپ‌های ساخته شده";
     }, []);
 
     return(
-        cookies.Appdoon_Auth &&
+        cookies.Appdoon_Auth && (userInfo.Role == 'Admin' || userInfo.Role == 'Teacher') &&
         <div class="container-main">
+            
         <div class="d-block">
             <section class="profile-home">
                 <div class="col-lg">
@@ -58,7 +72,7 @@ const UserRoadmaps = () => {
                                         </li>
                                         
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <NavLink to="/UserRoadmaps" class="active"><i class=""></i>
+                                            <NavLink to="/UserRoadmaps" class=""><i class=""></i>
                                                 رودمپ‌های شرکت کرده
                                             </NavLink>
                                         </li>
@@ -69,7 +83,7 @@ const UserRoadmaps = () => {
                                         </li>
                                         {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <NavLink to="/UserCreatedRoadmaps" class=""><i class=""></i>
+                                            <NavLink to="/UserCreatedRoadmaps" class="active"><i class=""></i>
                                                 رودمپ‌های ساخته شده
                                             </NavLink>
                                         </li>
@@ -99,19 +113,19 @@ const UserRoadmaps = () => {
 
             <div class="col-lg-9 col-md-9 col-xs-14 pl">
 
-            <div class = "heightB">
-            <main class="heightB">
-            <div class="heightB">
-                    <div class="heightB">
-                        <section class="heightB">
-
+            <div>
+            <main>
+            <div>
+                    <div>
+                        <div>
+                        
                             {roadmaps.length > 0 && (
                                 <div className = "grid-container">
-                                {roadmaps.map((data, idx) => (
-                                    <div class="grid-item">
-                                        <UserRoadmapBox data={data} key={idx} />
-                                    </div>
-                                ))}
+                                    {roadmaps.map((data, idx) => (
+                                        <div class="grid-item">
+                                            <UserRoadmapBox data={data} key={idx} />
+                                        </div>
+                                    ))}
                                 </div>
                                 )
                             }
@@ -124,15 +138,14 @@ const UserRoadmaps = () => {
 
 
 
-                        </section>
+                        </div>
 
                     </div>
-                </div>
-            </main>
-            </div>
+                            </div>
+                                </main>
+                            </div>
 
- </div>
-
+                        </div>
                     </div>
                 </div>
             </section>
@@ -143,4 +156,4 @@ const UserRoadmaps = () => {
 
 }
 
-export default UserRoadmaps;
+export default UserCreatedRoadmaps;

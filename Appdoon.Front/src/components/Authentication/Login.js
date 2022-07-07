@@ -19,6 +19,9 @@ const Login = () => {
         }
     },[cookies])
 
+    useEffect(() => {
+        document.title = "ورود";
+    }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();

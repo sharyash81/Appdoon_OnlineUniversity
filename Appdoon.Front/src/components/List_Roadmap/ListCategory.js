@@ -8,9 +8,7 @@ import useFetch from '../Common/useFetch';
 import DeleteCategoryModal from "../Modals/Delete/DeleteCategoryModal";
 import EditCategoryModal from "../Modals/Edit/EditCategoryModal";
 import CreateCategoryModal from "../Modals/Create/CreateCategoryModal";
-import Pagination from "../Pagination";
-
-import '../../Modular_Css/SearchBox.css'
+import Pagination from "../Common/Pagination";
 
 const ListCategory = () => {
 
@@ -79,7 +77,6 @@ const ListCategory = () => {
     })
 
     const clear = () =>{
-
         document.getElementById("result_message_edit_category").innerHTML = null;
         document.getElementById("result_message_delete_category").innerHTML = null;
     }
@@ -88,6 +85,10 @@ const ListCategory = () => {
         document.getElementById("CreateLinkCategory").value = null;
         document.getElementById("result_message_create_category").innerHTML = null;
     }
+
+    useEffect(() => {
+        document.title = "لیست دسته‌ها";
+    }, []);
 
     return(
         <div>
@@ -99,23 +100,32 @@ const ListCategory = () => {
                     <div class="container-main">
 
                     <div class="main-row">
-                        <div style={{marginTop:"0px", marginBottom:"50px"}}>
-                            <h1>دسته‌بندی‌ها</h1>
-                        </div>
-                        
 
-                        <div style={{marginTop:"-15px", marginBottom:"20px"}}>
-                            <div style={{float:"left" , marginTop:"0px", marginLeft:"10px", marginBottom:"10px"}}>
-                                <button style={{marginLeft:"10px"}} href="#!" data-toggle="modal" data-target="#createModalCategory" variant="success" class="btn btn-success" onClick={() => {clearCreate();}}>افزودن دسته</button>
+
+                        <div style={{display:"flex", justifyContent:"center"}}>
+                            <div class="info-page-faq" style={{marginTop:"-17px",marginBottom:"10px" ,width:"98%"}}>
+                                <div id="content-bottom" style={{marginBottom:"-20px"}}>
+
+                                    <div style={{marginTop:"-10px", marginBottom:"55px"}}>
+                                        <h1>دسته‌بندی‌ها</h1>
+                                    </div>
+                                    
+
+                                    <div style={{marginTop:"-15px", marginBottom:"20px"}}>
+                                        <div style={{float:"left" , marginTop:"0px", marginLeft:"10px", marginBottom:"10px"}}>
+                                            <button style={{marginLeft:"10px"}} href="#!" data-toggle="modal" data-target="#createModalCategory" variant="success" class="btn btn-success" onClick={() => {clearCreate();}}>افزودن دسته</button>
+                                        </div>
+
+                                        <div style={{width:"25%", marginRight:"20px"}} class="input-group rounded">
+                                            <input id="search_box_info" onChange={handleSearch} type="search" class="form-control rounded" placeholder="جستجو کنید ..." aria-label="Search" aria-describedby="search-addon" />
+                                        </div>
+                                    </div>
+                                    
+                                </div>
                             </div>
-
-                            <div style={{width:"25%", marginRight:"20px"}} class="input-group rounded">
-                                <input id="search_box_info" onChange={handleSearch} type="search" class="form-control rounded" placeholder="جستجو کنید ..." aria-label="Search" aria-describedby="search-addon" />
-                            </div>
-                            
                         </div>
 
-
+                        {/*
                         <div style={{marginTop:"-20px",marginBottom:"-20px"}} id="breadcrumb">
                             <i class="mdi mdi-home"></i>
                             <nav aria-label="breadcrumb">
@@ -124,6 +134,7 @@ const ListCategory = () => {
                                 </ol>
                             </nav>
                         </div>
+                        */}
 
                         <section class="cart-home">
                             <div class="post-item-cart d-block order-2">

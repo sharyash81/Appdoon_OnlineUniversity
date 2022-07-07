@@ -27,9 +27,9 @@ const Navigation = () => {
                                 <div class="header-right">
                                     <div class="col-lg-3 pr">
                                         <div class="header-logo row text-right">
-                                            <a href="#">
+                                            <NavLink to="/">
                                                 <img src="../assets/images/logo.png" alt="Appdoon" width="200px"/>
-                                            </a>
+                                            </NavLink>
                                         </div>
                                     </div>
                                 </div>
@@ -44,7 +44,7 @@ const Navigation = () => {
                                                     <span class="icon-account">
                                                         <img src="../assets/images/man.png" class="avator"/>
                                                     </span>
-                                                    {cookies.Appdoon_Auth && <NavLink to="/profile"><span class="title-account">حساب کاربری</span></NavLink>}
+                                                    {cookies.Appdoon_Auth && <NavLink to="/profile"><span class="title-account">{userInfo.Username}</span></NavLink>}
                                                     {!cookies.Appdoon_Auth && <NavLink to="/login"><span class="title-account">ورود / ثبت‌نام</span></NavLink>}
 
                                                     <div class="dropdown-menu">

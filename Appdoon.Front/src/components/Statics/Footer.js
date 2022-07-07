@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Footer = () => {
         return(
@@ -62,35 +63,35 @@ const Footer = () => {
                                             <div class="row">
                                                 <section class="footer-links-col">
                                                     <div class="headline-links">
-                                                        <a href="#">
+                                                        <a href="#!">
                                                             همراه با Appdoon
                                                         </a>
                                                     </div>
                                                     <ul class="footer-menu-ul">
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <a href="#!">
                                                                 قوانین
                                                             </a>
                                                         </li>
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <NavLink to="/about_us">
                                                                 درباره ما
-                                                            </a>
+                                                            </NavLink>
                                                         </li>
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <a href="#!">
                                                                 تماس با ما
                                                             </a>
                                                         </li>
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <a href="#!">
                                                                 آموزشگاه
                                                             </a>
                                                         </li>
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <NavLink to="/lessons">
                                                                 بلاگ
-                                                            </a>
+                                                            </NavLink>
                                                         </li>
                                                     </ul>
                                                 </section>
@@ -100,23 +101,23 @@ const Footer = () => {
                                             <div class="row">
                                                 <section class="footer-links-col">
                                                     <div class="headline-links">
-                                                        <a href="#">
+                                                        <a href="#!">
                                                             خدمات سایت
                                                         </a>
                                                     </div>
                                                     <ul class="footer-menu-ul">
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <NavLink to="/">
                                                                 رودمپ‌ها
-                                                            </a>
+                                                            </NavLink>
                                                         </li>
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <a href="#!">
                                                                 دوره‌ها
                                                             </a>
                                                         </li>
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <a href="#!">
                                                                 اساتید
                                                             </a>
                                                         </li>
@@ -128,13 +129,13 @@ const Footer = () => {
                                             <div class="row">
                                                 <section class="footer-links-col">
                                                     <div class="headline-links">
-                                                        <a href="#">
+                                                        <a href="#!">
                                                             راهنمای سایت
                                                         </a>
                                                     </div>
                                                     <ul class="footer-menu-ul">
                                                         <li class="menu-item-type-custom">
-                                                            <a href="#">
+                                                            <a href="#!">
                                                                 نحوه استفاده رودمپ
                                                             </a>
                                                         </li>
@@ -150,7 +151,7 @@ const Footer = () => {
                                             <div class="row">
                                                 <section class="footer-links-col">
                                                     <div class="headline-links">
-                                                        <a href="#">
+                                                        <a href="#!">
                                                             به ما اعتماد کنید:
                                                         </a>
                                                     </div>
