@@ -1,0 +1,48 @@
+version: '3.9'
+services:
+  appdoon-database:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    user: root
+    hostname: 'appdoon-database'
+    container_name: appdoon-database
+    volumes:
+      - appdoon-db-volume:/var/opt/mssql/data
+    environment:
+      - SA_PASSWORD=Appdoon!2021
+      - ACCEPT_EULA=Y
+    ports:
+      - 1433:1433
+    expose:
+      - 1433
+    
+  appdoon-backend:
+    build:
+      context: .  
+    container_name: appdoon-backend
+    depends_on:
+      - appdoon-database
+    ports:
+      - 5001:80
+    hostname: 'appdoon-backend'
+  appdoon-frontend:
+    build:
+      context: ./Appdoon.Front
+      dockerfile: Dockerfile 
+      args:
+        - URI=http://localhost:5001/api/
+        - URI_P=http://localhost:5001/Photos/
+    container_name: appdoon-frontend
+    depends_on:
+      - appdoon-database
+      - appdoon-backend
+    ports:
+     - 3000:80
+volumes:
+  appdoon-db-volume:
+
+      
+    
+
+
+
+    

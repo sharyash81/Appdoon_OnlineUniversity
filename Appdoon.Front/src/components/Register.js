@@ -16,7 +16,7 @@ const Register = () => {
                 Email:event.target.Email.value,
                 Username:event.target.Username.value,
                 Password:event.target.Password.value
-
+                
 
             })
         })
@@ -35,7 +35,7 @@ const Register = () => {
         },
         (error)=>{
             document.getElementById("register_error").style.color = "red";
-            document.getElementById("register_error").innerHTML = "خطایی رخ داده است!";
+            document.getElementById("register_error").innerHTML = error.message;
         })
     }
 
