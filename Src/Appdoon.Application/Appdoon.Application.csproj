@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -15,6 +15,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Appdoon.Common\Appdoon.Common.csproj" />
     <ProjectReference Include="..\Appdoon.Domain\Appdoon.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Homeworks\Command\" />
+    <Folder Include="Services\Progress\Query\" />
   </ItemGroup>
 
 </Project>

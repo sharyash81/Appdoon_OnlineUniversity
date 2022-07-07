@@ -4,13 +4,13 @@ import { useEffect } from "react";
 
 const useFetch = (url,sensetive) =>{
 
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(1);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const abortCont = new AbortController();
 
-        fetch(url, {signal : abortCont.signal })
+        fetch(url, {credentials:"include" , signal : abortCont.signal })
             .then(res => {
                 if(!res.ok){
                     throw Error('could not fetch!');

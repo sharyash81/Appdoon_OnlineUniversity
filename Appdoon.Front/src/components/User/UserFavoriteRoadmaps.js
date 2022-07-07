@@ -4,12 +4,36 @@ import useFetch from '../Common/useFetch';
 import { Col, Form } from "react-bootstrap";
 import RoadmapBox from '../Roadmap/RoadmapBox';
 import UserRoadmapBox from './UserRoadmapBox';
+import { useCookies } from "react-cookie";
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const UserFavoriteRoadmaps = () => {
 
-    const {data : roadmaps, isLogin, error} = useFetch(process.env.REACT_APP_API+'RoadMaps/Index');
+    const [cookies, setCookie] = useCookies(['Appdoon_Auth']);
+    const navigate = useNavigate();
+    useEffect(()=>{
+        if(!cookies.Appdoon_Auth){
+            navigate('/login')
+        }
+    },[cookies])
+
+    const [sensetive, setSensetive] = useState(false);
+
+    //User
+    const [urlRoadmaps, setUrlRoadmaps] = useState(process.env.REACT_APP_API + 'profile/BookMarkedRoadMaps')
+    const {data : roadmaps} = useFetch(urlRoadmaps,sensetive);
+
+    //User
+    const [urlAuth, setUrlAuth] = useState(process.env.REACT_APP_API + "Authentication/InfoFromCookie")
+    const {data : userInfo} = useFetch(urlAuth,sensetive);
+
+    useEffect(() => {
+        document.title = "رودمپ‌های موردعلاقه";
+    }, []);
 
     return(
+        cookies.Appdoon_Auth &&
         <div class="container-main">
         <div class="d-block">
             <section class="profile-home">
@@ -28,25 +52,44 @@ const UserFavoriteRoadmaps = () => {
                                 <section class="profile-box">
                                     <ul class="profile-account-navs">
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <a href="/Profile" class=""><i class="mdi mdi-account-outline"></i>
+                                            <NavLink to="/Profile" class=""><i class="mdi mdi-account-outline"></i>
                                                 پروفایل
-                                            </a>
+                                            </NavLink>
                                         </li>
                                         
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <a href="/UserRoadmaps" class=""><i class=""></i>
-                                                لیست رودمپ های من
-                                            </a>
+                                            <NavLink to="/UserRoadmaps" class=""><i class=""></i>
+                                                رودمپ‌های شرکت کرده
+                                            </NavLink>
                                         </li>
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <a href="/UserFavoriteRoadmaps" class="active"><i class="active"></i>
-                                                رودمپ های مورد علاقه من
-                                            </a>
+                                            <NavLink to="/UserFavoriteRoadmaps" class="active"><i class="active"></i>
+                                                رودمپ‌های مورد علاقه
+                                            </NavLink>
                                         </li>
+                                        {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
                                         <li class="profile-account-nav-item navigation-link-dashboard">
-                                            <a href="EditProfile" class=""><i class=""></i>
+                                            <NavLink to="/UserCreatedRoadmaps" class=""><i class=""></i>
+                                                رودمپ‌های ساخته شده
+                                            </NavLink>
+                                        </li>
+                                        }
+                                        {userInfo.Role && (userInfo.Role == "Admin" || userInfo.Role == "Teacher") &&
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <NavLink to="/UserCreatedLessons" class=""><i class=""></i>
+                                                مقالات ساخته شده
+                                            </NavLink>
+                                        </li>
+                                        }
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <NavLink to="/EditProfile" class=""><i class=""></i>
                                                 ویرایش اطلاعات      
-                                            </a>
+                                            </NavLink>
+                                        </li>
+                                        <li class="profile-account-nav-item navigation-link-dashboard">
+                                            <NavLink to="/EditPassword" class=""><i class=""></i>
+                                                تغییر رمز عبور
+                                            </NavLink>
                                         </li>
                                     </ul>
                                 </section>
@@ -62,18 +105,19 @@ const UserFavoriteRoadmaps = () => {
                         <section class="heightB">
 
                         {roadmaps.length > 0 && (
-                                <div class="heightB">
-                                    {roadmaps.map((data, idx) => (
-                                            
-                                            <UserRoadmapBox data={data} key={idx} />
-                                    ))}
-                                </div>
+                                <div className = "grid-container">
+                                {roadmaps.map((data, idx) => (
+                                    <div class="grid-item">
+                                        <UserRoadmapBox data={data} key={idx} />
+                                    </div>
+                                ))}
+                            </div>
                                 )
                             }
                 
-                            {roadmaps.length == 0 && (
+                            {roadmaps.length === 0 && (
                                 <div>
-                                    
+                                    شما هیچ رودمپ مورد علاقه‌ای ندارید.
                                 </div>)
                             }
 

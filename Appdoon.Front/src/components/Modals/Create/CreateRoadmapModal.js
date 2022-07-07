@@ -11,7 +11,7 @@ import useUpdate from '../../Common/useUpdate';
 import $ from 'jquery';
 import Select from 'react-select';
 
-import "../../../Modular_Css/EditRoadmapModal.css";
+
 
 import chroma from 'chroma-js';
 
@@ -27,7 +27,7 @@ function CreateRoadmapModal({ id, selectedOptions, setSelectedOptions, sensetive
     const [urlCategories, setUrlCategories] = useState(process.env.REACT_APP_API + "category/get");
     const [pageSizeCategories, setPageSize] = useState(9999);
     const [pageNumberCategories, setPageNumber] = useState(1);
-    const [query_string_categories, set_query_string_categories] = useState(`${urlCategories}?page_number=${pageNumberCategories}&page_size=${pageSizeCategories}`)
+    const [query_string_categories, set_query_string_categories] = useState(`${urlCategories}?PageNumber=${pageNumberCategories}&PageSize=${pageSizeCategories}`)
     const {data} = useFetch(query_string_categories,sensetive);
     const [categories, setCategories] = useState(data.Categories);
     const [rowCount, setRowCount] = useState(data.RowCount);

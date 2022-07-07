@@ -5,17 +5,22 @@ import RoadmapBox from "./RoadmapBox";
 import CreateLessonModal from "../Modals/Create/CreateLessonModal"
 import { useState } from "react";
 import { useEffect } from "react";
-import Pagination from "../Pagination";
+import Pagination from "../Common/Pagination";
 
 
 
 const Lessons = () =>{
     const [sensetive, setSensetive] = useState(false);
+
+    //User
+    const [urlAuth, setUrlAuth] = useState(process.env.REACT_APP_API + "Authentication/InfoFromCookie")
+    const {data : userInfo} = useFetch(urlAuth,sensetive);
+
     //Lessons
     const [urlGet, setUrlGet] = useState(process.env.REACT_APP_API + "lesson/get");
     const [pageSize, setPageSize] = useState(5);
     const [pageNumber, setPageNumber] = useState(1);
-    const [query_string_lessons, set_query_string_lessons] = useState(`${urlGet}?page_number=${pageNumber}&page_size=${pageSize}`)
+    const [query_string_lessons, set_query_string_lessons] = useState(`${urlGet}?PageNumber=${pageNumber}&PageSize=${pageSize}`)
     const {data} = useFetch(query_string_lessons,sensetive);
     const [lessons, setCategories] = useState(null);
     const [rowCount, setRowCount] = useState(null);
@@ -40,7 +45,7 @@ const Lessons = () =>{
         if(document.getElementById("search_box_info").value == ""){
             document.getElementById("search_box_info").dir = "rtl";
             setPageNumber(1);
-            set_query_string_lessons(`${urlGet}?page_number=${1}&page_size=${pageSize}`);
+            set_query_string_lessons(`${urlGet}?PageNumber=${1}&PageSize=${pageSize}`);
         }
         else{
             document.getElementById("search_box_info").dir = "auto";
@@ -48,7 +53,7 @@ const Lessons = () =>{
             
             let searched_text = document.getElementById("search_box_info").value;
             setPageNumber(1);
-            const query_string_search = `${urlSearch}?searched_text=${searched_text}&page_number=${1}&page_size=${pageSize}`
+            const query_string_search = `${urlSearch}?SearchedText=${searched_text}&PageNumber=${1}&PageSize=${pageSize}`
             set_query_string_lessons(query_string_search);
 
         }
@@ -59,11 +64,11 @@ const Lessons = () =>{
         if(document.getElementById("search_box_info").value != ""){
             setPageNumber(page_number);
             let searched_text = document.getElementById("search_box_info").value;
-            set_query_string_lessons(`${urlSearch}?searched_text=${searched_text}&page_number=${page_number}&page_size=${pageSize}`);
+            set_query_string_lessons(`${urlSearch}?SearchedText=${searched_text}&PageNumber=${page_number}&PageSize=${pageSize}`);
         }
         else{
             setPageNumber(page_number);
-            set_query_string_lessons(`${urlGet}?page_number=${page_number}&page_size=${pageSize}`);
+            set_query_string_lessons(`${urlGet}?PageNumber=${page_number}&PageSize=${pageSize}`);
         }
     }
 
@@ -77,27 +82,39 @@ const Lessons = () =>{
         document.getElementById("PreviewPhotoLesson").src = photopath+"1.jpg";
     }
 
+    useEffect(() => {
+        document.title = "مقالات";
+    }, []);
+
     return(
         <div>
             {<CreateLessonModal id={"createModalLesson"} sensetive = {sensetive} setSensetive = {setSensetive}/>}
 
             <main class="main-row mb-2 mt-2">
-                <div style={{marginTop:"-10px", marginBottom:"60px"}}>
-                    <h1>مقالات</h1>
-                </div>
 
-                <div style={{marginBottom:"10px", marginTop:"-23px"}}>
-                    <div style={{float:"left" , marginTop:"0px", marginLeft:"10px", marginBottom:"10px"}}>
-                        <button style={{marginLeft:"10px"}} href="#!" data-toggle="modal" data-target="#createModalLesson" variant="success" class="btn btn-success" onClick={() => {clear();}}>افزودن مقاله</button>
-                    </div>
-                    <div style={{width:"25%", marginRight:"20px"}} class="input-group rounded">
-                        <input id="search_box_info" onChange={handleSearch} type="search" class="form-control rounded" placeholder="جستجو کنید ..." aria-label="Search" aria-describedby="search-addon" />
+                <div style={{display:"flex", justifyContent:"center"}}>
+                    <div class="info-page-faq" style={{marginTop:"-25px",marginBottom:"0px" ,width:"98%"}}>
+                        <div id="content-bottom" style={{marginBottom:"-20px"}}>
+                            <div style={{marginTop:"-10px", marginBottom:"63px"}}>
+                                <h1>مقالات</h1>
+                            </div>
+
+                            <div style={{marginBottom:"20px", marginTop:"-23px"}}>
+                                <div style={{float:"left" , marginTop:"0px", marginLeft:"10px", marginBottom:"10px"}}>
+                                {userInfo.Role && (userInfo.Role == "Teacher" || userInfo.Role == "Admin") && <button style={{marginLeft:"10px"}} href="#!" data-toggle="modal" data-target="#createModalLesson" variant="success" class="btn btn-success" onClick={() => {clear();}}>افزودن مقاله</button>}
+                                </div>
+                                <div style={{width:"25%", marginRight:"20px"}} class="input-group rounded">
+                                    <input id="search_box_info" onChange={handleSearch} type="search" class="form-control rounded" placeholder="جستجو کنید ..." aria-label="Search" aria-describedby="search-addon" />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="container-main">
                 
                     <div class="d-block">
+
                         <div class="col-lg-9 col-md-8 col-xs-12 pr mt-3">
                             <section class="content-widget">
                                 {lessons && lessons.length > 0 && (
@@ -118,7 +135,7 @@ const Lessons = () =>{
                                                         </NavLink>
                                                     </div>
                                                     <br/>
-                                                    <div class="excerpt">{data.Text}</div>
+                                                    <div class="excerpt">{data.Text.length > 300 ? (data.Text.substr(0,300)+"...") : data.Text}</div>
                                                     {/*
                                                     
                                                     <span class="post-date">
@@ -143,11 +160,13 @@ const Lessons = () =>{
 
                             </section>
                         </div>
-                        <div class="col-lg-3 col-md-4 col-xs-12 pr mt-3 sticky-sidebar">
+
+
+                        <div class="col-lg-3 col-md-4 col-xs-12 pr mt-3">
                             <div class="shortcode-widget-area-sidebar">
                                 <section class="widget-posts">
                                     <div class="header-sidebar mb-3">
-                                        <h3>جدیدترین مقالات</h3>
+                                        <h3>مقالات برتر</h3>
                                     </div>
                                     <div class="content-sidebar">
                                         <div class="item">

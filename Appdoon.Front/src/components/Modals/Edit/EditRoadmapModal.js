@@ -11,12 +11,6 @@ import useUpdate from '../../Common/useUpdate';
 import $ from 'jquery';
 import Select from 'react-select';
 
-import "../../../Modular_Css/EditRoadmapModal.css";
-
-import chroma from 'chroma-js';
-
-import { StylesConfig } from 'react-select';
-
 function EditRoadmapModal({ id, roadmap, sensetive, setSensetive }) {
 
 
@@ -24,7 +18,7 @@ function EditRoadmapModal({ id, roadmap, sensetive, setSensetive }) {
     const [urlCategories, setUrlCategories] = useState(process.env.REACT_APP_API + "category/get");
     const [pageSizeCategories, setPageSize] = useState(9999);
     const [pageNumberCategories, setPageNumber] = useState(1);
-    const [query_string_categories, set_query_string_categories] = useState(`${urlCategories}?page_number=${pageNumberCategories}&page_size=${pageSizeCategories}`)
+    const [query_string_categories, set_query_string_categories] = useState(`${urlCategories}?PageNumber=${pageNumberCategories}&PageSize=${pageSizeCategories}`)
     const {data} = useFetch(query_string_categories,sensetive);
     const [categories, setCategories] = useState(data.Categories);
     const [rowCount, setRowCount] = useState(data.RowCount);
@@ -58,7 +52,6 @@ function EditRoadmapModal({ id, roadmap, sensetive, setSensetive }) {
             imagesrc = event.target.Photo.files[0].name;
             formData.append("myFile",event.target.Photo.files[0]);
         }
-
 
         formData.append("Title",event.target.Title.value);
         formData.append("Description",event.target.Description.value);

@@ -11,7 +11,7 @@ import useUpdate from '../../Common/useUpdate';
 import $ from 'jquery';
 import Select from 'react-select';
 
-import "../../../Modular_Css/EditRoadmapModal.css";
+
 
 import chroma from 'chroma-js';
 

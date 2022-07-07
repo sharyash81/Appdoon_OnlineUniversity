@@ -19,6 +19,85 @@ namespace Appdoon.Presistence.Migrations
                 .HasAnnotation("ProductVersion", "5.0.13")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Appdoon.Domain.Entities.HomeWorks.Homework", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("InsertTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MinScore")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RemoveTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Homeworks");
+                });
+
+            modelBuilder.Entity("Appdoon.Domain.Entities.Homeworks.Question", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Answer")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HomeworkId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Option1")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Option2")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Option3")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Option4")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RemoveTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HomeworkId");
+
+                    b.ToTable("Questions");
+                });
+
             modelBuilder.Entity("Appdoon.Domain.Entities.Progress.ChildStepProgress", b =>
                 {
                     b.Property<int>("Id")
@@ -36,6 +115,9 @@ namespace Appdoon.Presistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("RemoveTime")
@@ -56,6 +138,46 @@ namespace Appdoon.Presistence.Migrations
                     b.ToTable("ChildStepProgresses");
                 });
 
+            modelBuilder.Entity("Appdoon.Domain.Entities.Progress.HomeworkProgress", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("HomeworkId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDone")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("RemoveTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HomeworkId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HomeworkProgresses");
+                });
+
             modelBuilder.Entity("Appdoon.Domain.Entities.Progress.StepProgress", b =>
                 {
                     b.Property<int>("Id")
@@ -70,6 +192,9 @@ namespace Appdoon.Presistence.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("RemoveTime")
@@ -134,10 +259,16 @@ namespace Appdoon.Presistence.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("HomeworkId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
 
                     b.Property<string>("Link")
@@ -158,6 +289,10 @@ namespace Appdoon.Presistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HomeworkId")
+                        .IsUnique()
+                        .HasFilter("[HomeworkId] IS NOT NULL");
+
                     b.HasIndex("StepId");
 
                     b.ToTable("ChildSteps");
@@ -169,6 +304,9 @@ namespace Appdoon.Presistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("InsertTime")
                         .HasColumnType("datetime2");
@@ -195,6 +333,8 @@ namespace Appdoon.Presistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Lessons");
                 });
@@ -238,7 +378,7 @@ namespace Appdoon.Presistence.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CreatoreId")
+                    b.Property<int>("CreatoreId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -287,6 +427,9 @@ namespace Appdoon.Presistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsRemoved")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRequired")
                         .HasColumnType("bit");
 
                     b.Property<string>("Link")
@@ -343,21 +486,21 @@ namespace Appdoon.Presistence.Migrations
                         new
                         {
                             Id = 1,
-                            InsertTime = new DateTime(2022, 5, 27, 23, 54, 27, 139, DateTimeKind.Local).AddTicks(405),
+                            InsertTime = new DateTime(2022, 7, 6, 20, 49, 15, 257, DateTimeKind.Local).AddTicks(6159),
                             IsRemoved = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 2,
-                            InsertTime = new DateTime(2022, 5, 27, 23, 54, 27, 145, DateTimeKind.Local).AddTicks(8183),
+                            InsertTime = new DateTime(2022, 7, 6, 20, 49, 15, 264, DateTimeKind.Local).AddTicks(1140),
                             IsRemoved = false,
                             Name = "Teacher"
                         },
                         new
                         {
                             Id = 3,
-                            InsertTime = new DateTime(2022, 5, 27, 23, 54, 27, 145, DateTimeKind.Local).AddTicks(8498),
+                            InsertTime = new DateTime(2022, 7, 6, 20, 49, 15, 264, DateTimeKind.Local).AddTicks(1457),
                             IsRemoved = false,
                             Name = "User"
                         });
@@ -483,6 +626,17 @@ namespace Appdoon.Presistence.Migrations
                     b.ToTable("RoleUser");
                 });
 
+            modelBuilder.Entity("Appdoon.Domain.Entities.Homeworks.Question", b =>
+                {
+                    b.HasOne("Appdoon.Domain.Entities.HomeWorks.Homework", "Homework")
+                        .WithMany("Questions")
+                        .HasForeignKey("HomeworkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Homework");
+                });
+
             modelBuilder.Entity("Appdoon.Domain.Entities.Progress.ChildStepProgress", b =>
                 {
                     b.HasOne("Appdoon.Domain.Entities.RoadMaps.ChildStep", "ChildStep")
@@ -498,6 +652,25 @@ namespace Appdoon.Presistence.Migrations
                         .IsRequired();
 
                     b.Navigation("ChildStep");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Appdoon.Domain.Entities.Progress.HomeworkProgress", b =>
+                {
+                    b.HasOne("Appdoon.Domain.Entities.HomeWorks.Homework", "Homework")
+                        .WithMany("HomeworkProgresses")
+                        .HasForeignKey("HomeworkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Appdoon.Domain.Entities.Users.User", "User")
+                        .WithMany("HomeworkProgresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Homework");
 
                     b.Navigation("User");
                 });
@@ -523,13 +696,30 @@ namespace Appdoon.Presistence.Migrations
 
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.ChildStep", b =>
                 {
+                    b.HasOne("Appdoon.Domain.Entities.HomeWorks.Homework", "Homework")
+                        .WithOne("ChildStep")
+                        .HasForeignKey("Appdoon.Domain.Entities.RoadMaps.ChildStep", "HomeworkId");
+
                     b.HasOne("Appdoon.Domain.Entities.RoadMaps.Step", "Step")
                         .WithMany("ChildSteps")
                         .HasForeignKey("StepId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Homework");
+
                     b.Navigation("Step");
+                });
+
+            modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.Lesson", b =>
+                {
+                    b.HasOne("Appdoon.Domain.Entities.Users.User", "Creator")
+                        .WithMany("CreatedLessons")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.RoadMap", b =>
@@ -537,7 +727,8 @@ namespace Appdoon.Presistence.Migrations
                     b.HasOne("Appdoon.Domain.Entities.Users.User", "Creatore")
                         .WithMany("CreatedRoadMaps")
                         .HasForeignKey("CreatoreId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.Navigation("Creatore");
                 });
@@ -628,6 +819,15 @@ namespace Appdoon.Presistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Appdoon.Domain.Entities.HomeWorks.Homework", b =>
+                {
+                    b.Navigation("ChildStep");
+
+                    b.Navigation("HomeworkProgresses");
+
+                    b.Navigation("Questions");
+                });
+
             modelBuilder.Entity("Appdoon.Domain.Entities.RoadMaps.ChildStep", b =>
                 {
                     b.Navigation("ChildStepProgresses");
@@ -649,7 +849,11 @@ namespace Appdoon.Presistence.Migrations
                 {
                     b.Navigation("ChildStepProgresses");
 
+                    b.Navigation("CreatedLessons");
+
                     b.Navigation("CreatedRoadMaps");
+
+                    b.Navigation("HomeworkProgresses");
 
                     b.Navigation("StepProgresses");
                 });
