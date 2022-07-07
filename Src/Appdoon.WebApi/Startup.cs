@@ -262,7 +262,7 @@ namespace OU_API
             services.AddScoped<IRegisterRoadmapService, RegisterRoadmapService>();
 
             // check user has roadmap or not
-            services.AddScoped<ICheckUserRegisterRoadmapService,CheckUserRegisterRoadmapService>();
+            services.AddScoped<ICheckUserRegisterRoadmapService, CheckUserRegisterRoadmapService>();
 
             //
             services.AddScoped<IIsUserBookMarkedRoadmapService, IsUserBookMarkedRoadmapService>();
@@ -274,7 +274,7 @@ namespace OU_API
             services.AddScoped<IGetPreviewRoadmapService, GetPreviewRoadmapService>();
 
             // bookmark roadmap service
-            services.AddScoped<IBookmarkRoadmapService,BookmarkRoadmapService>();
+            services.AddScoped<IBookmarkRoadmapService, BookmarkRoadmapService>();
 
             //homework
             services.AddScoped<IGetHomeworkService, GetHomeworkService>();
@@ -288,7 +288,7 @@ namespace OU_API
             services.AddScoped<IGetCreatedRoadMapService, GetCreatedRoadMapService>();
 
             // get created lessons service
-            services.AddScoped<IGetCreatedLessonsService,GetCreatedLessonsService>();
+            services.AddScoped<IGetCreatedLessonsService, GetCreatedLessonsService>();
 
 
             // Injection for user validatore
